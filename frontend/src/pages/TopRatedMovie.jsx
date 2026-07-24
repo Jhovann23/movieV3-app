@@ -1,16 +1,15 @@
+import { useEffect } from "react";
+import { useState } from "react";
+import { imageOriginal, imageURL } from "../api";
 import { useNavigate, useParams } from "react-router";
-import { imageURL } from "../api";
-import { useEffect, useState } from "react";
-import { imageOriginal } from "../api";
 import axios from "axios";
 import { apiKey } from "../api";
 
-export default function SearchMovie() {
+export default function TopRatesMovie() {
   const [recommendations, setRecommendations] = useState([]);
   const [detail, setDetail] = useState([]);
   const [credits, setCredits] = useState([]);
   window.scrollTo({top: 0})
-
   const { id, title } = useParams();
   const navigate = useNavigate()
   const idNum = parseInt(id);
@@ -38,9 +37,8 @@ export default function SearchMovie() {
 
   useEffect(() => {
     const getRecommend = async () => {
-      const movies = await axios.get(
-        `https://api.themoviedb.org/3/movie/${idNum}/recommendations?api_key=${apiKey}`
-      );
+      const movies = await axios.get(`
+        https://api.themoviedb.org/3/movie/${idNum}/recommendations?api_key=${apiKey}`);
       const sliceMovies = movies.data.results.slice(0, 5);
       setRecommendations(sliceMovies);
     };
@@ -69,7 +67,7 @@ export default function SearchMovie() {
             <span className="mr-2">{detail.release_date}</span>
             {detail.genres && detail.genres.length > 0 && (
               <p className="mt-2">
-                Genres: {detail.genres.map((g) => g.name).join(", ")}
+                {detail.genres.map((g) => g.name).join(", ")}
               </p>
             )}
           </div>
@@ -92,7 +90,7 @@ export default function SearchMovie() {
                   alt=""
                   className="w-[170px] h-[200px] object-cover rounded-t-2xl"
                 />
-                <div className=" w-[170px] h-[100px] bg-white rounded-b-2xl">
+                <div className=" w-[170px] h-[90px] bg-white rounded-b-2xl">
                   <h1 className="font-bold pt-2 pl-2 text-base hover:text-[#01BBEB] hover:cursor-pointer ">
                     {credit.name}
                   </h1>
@@ -103,20 +101,21 @@ export default function SearchMovie() {
           })}
 
           {/* <div className=" mb-8 border-2 border-white rounded-2xl mr-2 hover:cursor-pointer ">
-                    <img
-                      src="/expPoster.jpg"
-                      alt=""
-                      className="w-[200px] h-[300px] object-cover rounded-2xl"
-                    />
-                    <div className=" w-full bg-white rounded-b-2xl">
-                      <h1 className="font-bold pt-4 pl-4 text-lg hover:text-[#01BBEB] hover:cursor-pointer ">
-                        Abdul
-                      </h1>
-                      <h1 className="pb-4 pl-4 w-[200px]">
-                        Lorem ipsum dolor sit amet. Lorem, ipsum dolor.
-                      </h1>
-                    </div>
-                  </div> */}
+              <img
+                src="/expPoster.jpg"
+                alt=""
+                className="w-[200px] h-[300px] object-cover rounded-2xl"
+              />
+              <div className=" w-full bg-white rounded-b-2xl">
+                <h1 className="font-bold pt-4 pl-4 text-lg hover:text-[#01BBEB] hover:cursor-pointer ">
+                  Abdul
+                </h1>
+                <h1 className="pb-4 pl-4 w-[200px]">
+                  Lorem ipsum dolor sit amet. Lorem, ipsum dolor.
+                </h1>
+              </div>
+            </div> */}
+
           <div className="w-[1200px] h-[400px]  m-auto">
             <h1 className="text-white font-bold text-4xl p-4 mb-4">
               Recommendations
@@ -134,7 +133,7 @@ export default function SearchMovie() {
                   >
                     <img
                       src={`${imageOriginal}/${movie.backdrop_path}`}
-                      alt={`${movie.title}`}
+                      alt=""
                       className="rounded-t-xl"
                     />
                     <div className="bg-white p-3 h-[100px] hover:bg-[#01BBEB] rounded-b-lg">

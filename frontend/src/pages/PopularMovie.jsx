@@ -53,8 +53,6 @@ export default function BannerMovie() {
     });
   }, [idNum]);
 
-  console.log(recommendations);
-
   return (
     <div className="bg-black box-border" key={id}>
       <div>
@@ -77,7 +75,7 @@ export default function BannerMovie() {
             <span className="mr-2">{popularMovies.release_date}</span>
             {detail.genres && detail.genres.length > 0 && (
               <p className="mt-2">
-                Genres: {detail.genres.map((g) => g.name).join(", ")}
+                {detail.genres.map((g) => g.name).join(", ")}
               </p>
             )}
           </div>
@@ -92,7 +90,7 @@ export default function BannerMovie() {
           {credits.map((credit) => {
             return (
               <div
-                className=" mb-8 border-white rounded-t-2xl mr-2 hover:cursor-pointer "
+                className=" mb-8 rounded-t-2xl mr-2 hover:cursor-pointer "
                 key={credit.id}
               >
                 <img

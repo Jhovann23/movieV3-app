@@ -1,16 +1,16 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { imageURL } from "../api";
 import { useEffect, useState } from "react";
 import { imageOriginal } from "../api";
 import axios from "axios";
 import { apiKey } from "../api";
-import { useNavigate } from "react-router";
 
-export default function UpcomingMovie() {
+export default function SearchMovie() {
   const [recommendations, setRecommendations] = useState([]);
   const [detail, setDetail] = useState([]);
   const [credits, setCredits] = useState([]);
   window.scrollTo({top: 0})
+
   const { id, title } = useParams();
   const navigate = useNavigate()
   const idNum = parseInt(id);
@@ -69,7 +69,7 @@ export default function UpcomingMovie() {
             <span className="mr-2">{detail.release_date}</span>
             {detail.genres && detail.genres.length > 0 && (
               <p className="mt-2">
-                Genres: {detail.genres.map((g) => g.name).join(", ")}
+                {detail.genres.map((g) => g.name).join(", ")}
               </p>
             )}
           </div>
@@ -92,7 +92,7 @@ export default function UpcomingMovie() {
                   alt=""
                   className="w-[170px] h-[200px] object-cover rounded-t-2xl"
                 />
-                <div className=" w-[170px] h-[90px] bg-white rounded-b-2xl">
+                <div className=" w-[170px] h-[100px] bg-white rounded-b-2xl">
                   <h1 className="font-bold pt-2 pl-2 text-base hover:text-[#01BBEB] hover:cursor-pointer ">
                     {credit.name}
                   </h1>
@@ -103,49 +103,49 @@ export default function UpcomingMovie() {
           })}
 
           {/* <div className=" mb-8 border-2 border-white rounded-2xl mr-2 hover:cursor-pointer ">
-            <img
-              src="/expPoster.jpg"
-              alt=""
-              className="w-[200px] h-[300px] object-cover rounded-2xl"
-            />
-            <div className=" w-full bg-white rounded-b-2xl">
-              <h1 className="font-bold pt-4 pl-4 text-lg hover:text-[#01BBEB] hover:cursor-pointer ">
-                Abdul
-              </h1>
-              <h1 className="pb-4 pl-4 w-[200px]">
-                Lorem ipsum dolor sit amet. Lorem, ipsum dolor.
-              </h1>
+                    <img
+                      src="/expPoster.jpg"
+                      alt=""
+                      className="w-[200px] h-[300px] object-cover rounded-2xl"
+                    />
+                    <div className=" w-full bg-white rounded-b-2xl">
+                      <h1 className="font-bold pt-4 pl-4 text-lg hover:text-[#01BBEB] hover:cursor-pointer ">
+                        Abdul
+                      </h1>
+                      <h1 className="pb-4 pl-4 w-[200px]">
+                        Lorem ipsum dolor sit amet. Lorem, ipsum dolor.
+                      </h1>
+                    </div>
+                  </div> */}
+          <div className="w-[1200px] h-[400px]  m-auto">
+            <h1 className="text-white font-bold text-4xl p-4 mb-4">
+              Recommendations
+            </h1>
+            <div className="flex gap-4 hover:cursor-pointer">
+              {recommendations.map((movie) => {
+                return (
+                  <div
+                    className="w-[250px]"
+                    key={movie.id}
+                    onClick={() => {
+                      navigate(`/movie/${movie.id}/${movie.title}`);
+                      console.log(movie.id);
+                    }}
+                  >
+                    <img
+                      src={`${imageOriginal}/${movie.backdrop_path}`}
+                      alt={`${movie.title}`}
+                      className="rounded-t-xl"
+                    />
+                    <div className="bg-white p-3 h-[100px] hover:bg-[#01BBEB] rounded-b-lg">
+                      <h1 className="font-semibold">{movie.title}</h1>
+                      <h1>{movie.release_date}</h1>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </div> */}
-        </div>
-      </div>
-      <div className="w-[1200px] h-[400px] m-auto">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4">
-          Recommendations
-        </h1>
-        <div className="flex gap-4 hover:cursor-pointer">
-          {recommendations.map((movie) => {
-            return (
-              <div
-                className="w-[250px]"
-                key={movie.id}
-                onClick={() => {
-                  navigate(`/movie/${movie.id}/${movie.title}`);
-                  console.log(movie.id);
-                }}
-              >
-                <img
-                  src={`${imageOriginal}/${movie.backdrop_path}`}
-                  alt=""
-                  className="rounded-t-xl"
-                />
-                <div className="bg-white p-3 h-[100px] hover:bg-[#01BBEB] rounded-b-lg">
-                  <h1 className="font-semibold">{movie.title}</h1>
-                  <h1>{movie.release_date}</h1>
-                </div>
-              </div>
-            );
-          })}
+          </div>
         </div>
       </div>
     </div>

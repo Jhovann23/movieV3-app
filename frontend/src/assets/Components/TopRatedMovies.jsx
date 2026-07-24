@@ -13,7 +13,7 @@ export default function TopRatedMoviesCards({ id, poster, title, release }) {
       <img
         src={poster}
         alt=""
-        className="w-[200px] h-[300px] border-2 border-white rounded-2xl mr-2 hover:cursor-pointer hover:opacity-80"
+        className="w-[200px] h-[300px] rounded-2xl mr-2 hover:cursor-pointer hover:opacity-80"
       />
       <h1 className="w-[150px] font-bold mt-2 text-lg hover:text-[#01BBEB] hover:cursor-pointer">
         {title}
