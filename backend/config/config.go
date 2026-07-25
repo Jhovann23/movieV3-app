@@ -11,20 +11,20 @@ import (
 	"gorm.io/gorm"
 )
 
-var(
-	DB *gorm.DB
+var (
+	DB        *gorm.DB
 	AppConfig *Config
 )
 
 type Config struct {
-	AppPort string
-	DBHost string
-	DBPassword string
-	DBName string
-	DBPort string
-	DBUser string
-	JWTSecret string
-	JWTExpired string
+	AppPort         string
+	DBHost          string
+	DBPassword      string
+	DBName          string
+	DBPort          string
+	DBUser          string
+	JWTSecret       string
+	JWTExpired      string
 	JWTRefreshToken string
 }
 
@@ -32,30 +32,30 @@ func LoadEnv() {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Fatal(".env not found");
+		log.Fatal(".env not found")
 	}
 
 	AppConfig = &Config{
-		AppPort: GetEnv("PORT", "3030"),
-		DBHost: GetEnv("DB_HOST", "localhost"),
-		DBPassword: GetEnv("DB_PASSWORD", "admin"),
-		DBName: GetEnv("DB_NAME", "movie_app"),
-		DBPort: GetEnv("DB_PORT", "5432"),
-		DBUser: GetEnv("DB_USER", "postgres"),
-		JWTSecret: GetEnv("JWT_SECRET", "C2Xdk8wdVxR66dVZxMQ8Ck87YjM7QaJt7gNajF5OnQj"),
-		JWTExpired: GetEnv("JWT_EXPIRED", "2h"),
+		AppPort:         GetEnv("PORT", "3030"),
+		DBHost:          GetEnv("DB_HOST", "localhost"),
+		DBPassword:      GetEnv("DB_PASSWORD", "admin"),
+		DBName:          GetEnv("DB_NAME", "movie_app"),
+		DBPort:          GetEnv("DB_PORT", "5432"),
+		DBUser:          GetEnv("DB_USER", "postgres"),
+		JWTSecret:       GetEnv("JWT_SECRET", "C2Xdk8wdVxR66dVZxMQ8Ck87YjM7QaJt7gNajF5OnQj"),
+		JWTExpired:      GetEnv("JWT_EXPIRED", "2h"),
 		JWTRefreshToken: GetEnv("REFRESH_TOKEN_EXPIRED", "24h"),
 	}
 }
 
 func GetEnv(key string, fallback string) string {
-	value, exist := os.LookupEnv(key);
+	value, exist := os.LookupEnv(key)
 
 	if exist {
 		return value
-	}else {
-		return fallback
 	}
+
+	return fallback
 }
 
 func ConnectDB() {

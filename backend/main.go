@@ -1,9 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"github.com/Jhovann23/movieV3-app/config"
+	"github.com/Jhovann23/movieV3-app/database/seed"
+)
 
 func main() {
-	name := "jhovan";
+	config.LoadEnv()
+	config.ConnectDB()
 
-	fmt.Println(name)
+	seed.SeedAdmin()
+	//App := fiber.New()
 }
