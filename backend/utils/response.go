@@ -23,46 +23,46 @@ func Success(c fiber.Ctx, message string, data interface{}) error {
 	)
 }
 
-func BadRequest(c fiber.Ctx, message string, err error) error {
+func BadRequest(c fiber.Ctx, message string, err string) error {
 	return c.Status(fiber.StatusBadRequest).JSON(
 		Response{
 			Status:       "Bad Request",
 			ResponseCode: fiber.StatusBadRequest,
 			Message:      message,
-			Error:        err.Error(),
+			Error:        err,
 		},
 	)
 }
 
-func NotFound(c fiber.Ctx, message string, err error) error {
+func NotFound(c fiber.Ctx, message string, err string) error {
 	return c.Status(fiber.StatusNotFound).JSON(
 		Response{
 			Status:       "Not Found",
 			ResponseCode: fiber.StatusNotFound,
 			Message:      message,
-			Error:        err.Error(),
+			Error:        err,
 		},
 	)
 }
 
-func Unauthorized(c fiber.Ctx, message string, err error) error {
+func Unauthorized(c fiber.Ctx, message string, err string) error {
 	return c.Status(fiber.StatusUnauthorized).JSON(
 		Response{
 			Status:       "Unauthorized",
 			ResponseCode: fiber.StatusUnauthorized,
 			Message:      message,
-			Error:        err.Error(),
+			Error:        err,
 		},
 	)
 }
 
-func InternalServerError(c fiber.Ctx, message string, err error) error {
+func InternalServerError(c fiber.Ctx, message string, err string) error {
 	return c.Status(fiber.StatusInternalServerError).JSON(
 		Response{
 			Status:       "Internal Server Error",
 			ResponseCode: fiber.StatusInternalServerError,
 			Message:      message,
-			Error:        err.Error(),
+			Error:        err,
 		},
 	)
 }
