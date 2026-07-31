@@ -13,6 +13,6 @@ func NewUserController(s services.UserService) *UserController {
 	return &UserController{s}
 }
 
-func (c *UserController) Register(ctx fiber.Ctx) error {
+func (c *UserController) Register(ctx fiber.Ctx) {
 
 }
