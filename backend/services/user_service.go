@@ -21,24 +21,40 @@ func NewUserServices(repo repositories.UserRepository) UserService {
 }
 
 func (s *userService) Register(user *models.User) error {
-	//kita cari di db ada atau tidak emailnya
-	//lalu hash passwordnya menggunakan utils yang sudah kita buat
-	//mengisi models usernya spt role, email, password dll
-	//lalu kita create ke database
 
+	//kita cari di db ada atau tidak emailnya
 	existing, _ := s.repo.FindByEmail(user.Email)
 	if existing.InternalID != 0 {
 		return errors.New("Email Already Registered!")
 	}
 
+	//lalu hash passwordnya menggunakan utils yang sudah kita buat
 	hashPassword, err := utils.HashPassword(user.Password)
 	if err != nil {
 		return err
 	}
 
+	//mengisi models usernya spt role, email, password dll atau tempel ke models nya
 	user.Password = hashPassword
 	user.Role = "user"
 	user.PublicID = uuid.New()
 
+	//lalu kita return  create ke database
 	return s.repo.Create(user)
+}
+
+func (s *userService) Login(email, password string) (*models.User, error) {
+	//kita cek emailnya ada atau engga di database
+	user, err := s.repo.FindByEmail(email)
+	if err != nil {
+		return nil, errors.New("Invalid Email")
+	}
+
+	//kita cek passwordnya sama atau tidak dengan yang ada di database, kalau false tidak masuk ke return if, jika true maka masuk
+	if !utils.CheckHashPassword(password, user.Password) {
+		return nil, errors.New("Invalid Credentials!")
+	}
+
+	//return user + errornya, kalau tidak error kasih nil
+	return user, err
 }
