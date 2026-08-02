@@ -12,6 +12,9 @@ import (
 type UserService interface {
 	Register(user *models.User) error
 	Login(email, password string) (*models.User, error)
+	Update(user *models.User) error
+	Delete(id int) error
+	FindByPublicId(public string) (*models.User, error)
 }
 type userService struct {
 	repo repositories.UserRepository
@@ -58,4 +61,16 @@ func (s *userService) Login(email, password string) (*models.User, error) {
 
 	//return user + errornya, kalau tidak error kasih nil
 	return user, err
+}
+
+func (s *userService) Update(user *models.User) error {
+	return s.repo.Update(user)
+}
+
+func (s *userService) Delete(id int) error {
+	return s.repo.Delete(id)
+}
+
+func (s *userService) FindByPublicId(publicId string) (*models.User, error) {
+	return s.repo.FindByPublicId(publicId)
 }
