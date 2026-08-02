@@ -11,6 +11,7 @@ import (
 
 type UserService interface {
 	Register(user *models.User) error
+	Login(email, password string) (*models.User, error)
 }
 type userService struct {
 	repo repositories.UserRepository

@@ -39,6 +39,6 @@ func (r *userRepository) FindById(id int) (*models.User, error) {
 func (r *userRepository) Update(user *models.User) error {
 	//menentukan model secara eksplisit, lalu mencari menggunakan where + parameter binding, setelah itu tinggal pakai update
 	return config.DB.Model(&models.User{}).Where("public_id = ?", user.PublicID).Updates(map[string]interface{}{
-		"username": user.Name,
+		"username": user.Username,
 	}).Error
 }
