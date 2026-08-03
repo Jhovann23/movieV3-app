@@ -34,4 +34,9 @@ func Setup(app *fiber.App, uc *controllers.UserController) {
 	//lalu fungsi get, put, delete, put + app group
 	userGroup.Delete("/:id", uc.DeleteUser)
 	userGroup.Put(":id", uc.Update)
+
+	//api group movies
+
+	//apiGroup := api.Group("/movies")
+
 }
