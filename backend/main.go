@@ -24,8 +24,14 @@ func main() {
 	userService := services.NewUserServices(userRepository)
 	userController := controllers.NewUserController(userService)
 
+	//injection manual movie
+	movieRepository := repositories.NewMovieRepository(config.AppConfig.TMDBApiKey)
+	movieService := services.NewMovieService(movieRepository)
+	movieController := controllers.NewMovieController(movieService)
+
+	//setup route
 	//panggil routes setupnya
-	routes.Setup(app, userController)
+	routes.Setup(app, userController, movieController)
 
 	//logging port + log fatal
 	port := config.AppConfig.AppPort

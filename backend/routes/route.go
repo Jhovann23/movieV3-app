@@ -9,7 +9,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Setup(app *fiber.App, uc *controllers.UserController) {
+func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.MovieController) {
 	//loadEnv pakai godotenv
 	err := godotenv.Load()
 	if err != nil {
@@ -27,16 +27,16 @@ func Setup(app *fiber.App, uc *controllers.UserController) {
 		},
 	}))
 
-	//deklarasi user group untuk "/users" (ditampung di variabel)
+	movieGroup := app.Group("/movies")
+	movieGroup.Get("/popular", mc.GetPopularMovie)
+	movieGroup.Get("/upcoming", mc.GetUpcomingMovie)
+	movieGroup.Get("/top_rated", mc.GetTopRatedMovie)
 
+	//deklarasi user group untuk "/users" (ditampung di variabel)
 	userGroup := api.Group("/users")
 
 	//lalu fungsi get, put, delete, put + app group
 	userGroup.Delete("/:id", uc.DeleteUser)
 	userGroup.Put(":id", uc.Update)
-
-	//api group movies
-
-	//apiGroup := api.Group("/movies")
 
 }

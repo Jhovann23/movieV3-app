@@ -8,3 +8,10 @@ type Movie struct {
 	ReleaseDate string  `json:"release_date"`
 	VoteAverage float64 `json:"vote_average"`
 }
+
+type MoviePaginatedResult struct {
+	Movies       []Movie
+	Page         int
+	TotalPages   int
+	TotalResults int
+}
