@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	url2 "net/url"
 	"time"
 
 	"github.com/Jhovann23/movieV3-app/models"
@@ -16,9 +17,10 @@ type tmdbMovieRepository struct {
 }
 
 type MovieRepository interface {
-	GetPopularMovies(Page int) (*models.MoviePaginatedResult, error)
-	GetUpcomingMovies(Page int) (*models.MoviePaginatedResult, error)
-	GetTopRatedMovies(Page int) (*models.MoviePaginatedResult, error)
+	GetPopularMovies(page int) (*models.MoviePaginatedResult, error)
+	GetUpcomingMovies(page int) (*models.MoviePaginatedResult, error)
+	GetTopRatedMovies(page int) (*models.MoviePaginatedResult, error)
+	GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error)
 }
 
 func NewMovieRepository(apiKey string) MovieRepository {
@@ -108,6 +110,38 @@ func (r *tmdbMovieRepository) GetTopRatedMovies(page int) (*models.MoviePaginate
 		return nil, err
 	}
 	movies := make([]models.Movie, len(tmdbResp.Results))
+	for i, movie := range tmdbResp.Results {
+		movies[i] = models.Movie{
+			ID:          movie.ID,
+			Title:       movie.Title,
+			Overview:    movie.Overview,
+			ReleaseDate: movie.ReleaseDate,
+			VoteAverage: movie.VoteAverage,
+		}
+	}
+
+	return &models.MoviePaginatedResult{
+		Movies:       movies,
+		Page:         page,
+		TotalPages:   tmdbResp.TotalPages,
+		TotalResults: tmdbResp.TotalResults,
+	}, nil
+}
+
+func (r *tmdbMovieRepository) GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error) {
+	url := fmt.Sprintf("%s/search/movie?query=%s&api_key=%s", r.baseURL, url2.QueryEscape(search), r.apiKey)
+	get, err := r.client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer get.Body.Close()
+
+	var tmdbResp models.TMDBListMovieResponse
+	if err := json.NewDecoder(get.Body).Decode(&tmdbResp); err != nil {
+		return nil, err
+	}
+	movies := make([]models.Movie, len(tmdbResp.Results))
+
 	for i, movie := range tmdbResp.Results {
 		movies[i] = models.Movie{
 			ID:          movie.ID,

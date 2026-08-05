@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/Jhovann23/movieV3-app/models"
 	"github.com/Jhovann23/movieV3-app/repositories"
 )
@@ -9,6 +11,7 @@ type MovieService interface {
 	GetPopularMovies(page int) (*models.MoviePaginatedResult, error)
 	GetUpcomingMovies(page int) (*models.MoviePaginatedResult, error)
 	GetTopRatedMovies(page int) (*models.MoviePaginatedResult, error)
+	GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error)
 }
 
 type movieService struct {
@@ -38,4 +41,15 @@ func (s *movieService) GetTopRatedMovies(page int) (*models.MoviePaginatedResult
 		page = 1
 	}
 	return s.repo.GetTopRatedMovies(page)
+}
+
+func (s *movieService) GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error) {
+	if page < 1 {
+		page = 1
+	}
+	if search == "" {
+		return nil, errors.New("search parameter is required")
+	}
+
+	return s.repo.GetSearchMovies(search, page)
 }

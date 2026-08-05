@@ -29,6 +29,8 @@ func main() {
 	movieService := services.NewMovieService(movieRepository)
 	movieController := controllers.NewMovieController(movieService)
 
+	//injection manual rating
+
 	//setup route
 	//panggil routes setupnya
 	routes.Setup(app, userController, movieController)

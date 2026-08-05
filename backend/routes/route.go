@@ -31,6 +31,7 @@ func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.Movie
 	movieGroup.Get("/popular", mc.GetPopularMovie)
 	movieGroup.Get("/upcoming", mc.GetUpcomingMovie)
 	movieGroup.Get("/top_rated", mc.GetTopRatedMovie)
+	movieGroup.Get("/search", mc.GetSearchMovie)
 
 	//deklarasi user group untuk "/users" (ditampung di variabel)
 	userGroup := api.Group("/users")

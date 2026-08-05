@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/Jhovann23/movieV3-app/services"
 	"github.com/Jhovann23/movieV3-app/utils"
@@ -48,4 +49,17 @@ func (controller *MovieController) GetTopRatedMovie(ctx fiber.Ctx) error {
 		return utils.BadRequest(ctx, "Failed to fetch API", err.Error())
 	}
 	return utils.Success(ctx, "Get Top Movies", movies)
+}
+
+func (controller *MovieController) GetSearchMovie(ctx fiber.Ctx) error {
+	query := strings.TrimSpace(ctx.Query("query"))
+	page, err := strconv.Atoi(ctx.Params("page", "1"))
+	if err != nil {
+		return err
+	}
+	result, err := controller.service.GetSearchMovies(query, page)
+	if err != nil {
+		return utils.BadRequest(ctx, "Failed to fetch API", err.Error())
+	}
+	return utils.Success(ctx, "Get Search Movies", result)
 }
