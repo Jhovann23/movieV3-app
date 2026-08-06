@@ -30,10 +30,13 @@ func main() {
 	movieController := controllers.NewMovieController(movieService)
 
 	//injection manual rating
+	ratingRepository := repositories.NewRatingRepository()
+	ratingService := services.NewRatingService(ratingRepository)
+	ratingController := controllers.NewRatingController(ratingService)
 
 	//setup route
 	//panggil routes setupnya
-	routes.Setup(app, userController, movieController)
+	routes.Setup(app, userController, movieController, ratingController)
 
 	//logging port + log fatal
 	port := config.AppConfig.AppPort

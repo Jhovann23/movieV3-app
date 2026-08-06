@@ -8,7 +8,7 @@ import (
 )
 
 type RatingService interface {
-	RateMovie(userID int64, movieID int, score int) error
+	RateMovie(userID uint, movieID int, score int) error
 }
 
 type ratingService struct {
@@ -19,7 +19,7 @@ func NewRatingService(repo repositories.RatingRepository) RatingService {
 	return &ratingService{repo: repo}
 }
 
-func (s *ratingService) RateMovie(userID int64, movieID int, score int) error {
+func (s *ratingService) RateMovie(userID uint, movieID int, score int) error {
 	if score < 1 || score > 5 {
 		return errors.New("score must be between 1 and 5")
 	}
