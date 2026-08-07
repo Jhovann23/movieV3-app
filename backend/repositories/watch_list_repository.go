@@ -11,7 +11,7 @@ type WatchListRepository interface {
 	Add(watchList *models.Watchlist) error
 	Remove(userID uint, movieID int) error
 	GetByUser(userID uint) ([]models.Watchlist, error)
-	IsInWatchList(userID uint) (bool, error)
+	IsInWatchList(userID uint, movieID int) (bool, error)
 }
 
 type watchListRepository struct{}
@@ -38,10 +38,10 @@ func (r *watchListRepository) GetByUser(userID uint) ([]models.Watchlist, error)
 	return watchList, err
 }
 
-func (r *watchListRepository) IsInWatchList(userID uint) (bool, error) {
+func (r *watchListRepository) IsInWatchList(userID uint, movieID int) (bool, error) {
 	var watchList []models.Watchlist
 	var count int64
-	err := config.DB.Where("user_id = ?", userID).Find(&watchList).Count(&count).Error
+	err := config.DB.Where("user_id = ? AND movie_id = ?", userID, movieID).Find(&watchList).Count(&count).Error
 
 	return count > 0, err
 }

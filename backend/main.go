@@ -34,9 +34,14 @@ func main() {
 	ratingService := services.NewRatingService(ratingRepository)
 	ratingController := controllers.NewRatingController(ratingService)
 
+	//injection manual watch_list
+	watchListRepository := repositories.NewWatchListRepository()
+	watchListService := services.NewWatchListService(watchListRepository)
+	watchListController := controllers.NewWatchListController(watchListService)
+
 	//setup route
 	//panggil routes setupnya
-	routes.Setup(app, userController, movieController, ratingController)
+	routes.Setup(app, userController, movieController, ratingController, watchListController)
 
 	//logging port + log fatal
 	port := config.AppConfig.AppPort

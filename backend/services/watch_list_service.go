@@ -9,7 +9,7 @@ import (
 
 type WatchList interface {
 	AddToWatchlist(userID uint, movieID int, title, posterPath string) error
-	//RemoveFromWatchlist(userID uint, movieID int) error
+	RemoveFromWatchlist(userID uint, movieID int) error
 	GetMyWatchList(userID uint) ([]models.Watchlist, error)
 }
 
@@ -22,7 +22,7 @@ func NewWatchListService(repo repositories.WatchListRepository) WatchList {
 }
 
 func (s *watchListService) AddToWatchlist(userID uint, movieID int, title, posterPath string) error {
-	exist, err := s.repo.IsInWatchList(userID)
+	exist, err := s.repo.IsInWatchList(userID, movieID)
 	if err != nil {
 		return err
 	}
@@ -40,9 +40,9 @@ func (s *watchListService) AddToWatchlist(userID uint, movieID int, title, poste
 	return s.repo.Add(watchList)
 }
 
-//func (s *watchListService) RemoveFromWatchlist(userID uint, movieID int) error {
-//
-//}
+func (s *watchListService) RemoveFromWatchlist(userID uint, movieID int) error {
+	return s.repo.Remove(userID, movieID)
+}
 
 func (s *watchListService) GetMyWatchList(userID uint) ([]models.Watchlist, error) {
 	return s.repo.GetByUser(userID)

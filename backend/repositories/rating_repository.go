@@ -27,7 +27,7 @@ func (r *ratingRepository) Upsert(rating *models.Rating) error {
 func (r *ratingRepository) GetByUserAndMovie(userID int64, movieID int) (*models.Rating, error) {
 	var rating models.Rating
 
-	err := config.DB.Where("user_id = ?", userID).First(&rating).Error
+	err := config.DB.Where("user_id = ? AND movie_id = ?", userID, movieID).First(&rating).Error
 	if err != nil {
 		return nil, err
 	}
