@@ -5,7 +5,7 @@ import (
 )
 
 type Watchlist struct {
-	ID         uint      `json:"public_id" db:"public_id" gorm:"primaryKey"`
+	ID         uint      `json:"id" db:"id" gorm:"primaryKey"`
 	UserID     uint      `json:"user_id" db:"user_id" gorm:"not null;uniqueIndex:idx_user_movie_watchlist" json:"user_id"`
 	MovieID    int       `json:"movie_id" db:"movie_id" gorm:"not null;uniqueIndex:idx_user_movie_watchlist" json:"movie_id"	`
 	MovieTitle string    `json:"movie_title" db:"movie_title"`

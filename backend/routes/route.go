@@ -34,7 +34,7 @@ func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.Movie
 	movieGroup.Get("/search", mc.GetSearchMovie)
 
 	//rating
-	ratingGroup := app.Group("/")
+	ratingGroup := api.Group("/")
 	ratingGroup.Post("/movies/:movie_id/rate", rc.RateMovie)
 
 	//deklarasi user group untuk "/users" (ditampung di variabel)

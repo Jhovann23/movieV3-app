@@ -5,7 +5,9 @@ import (
 
 	"github.com/Jhovann23/movieV3-app/services"
 	"github.com/Jhovann23/movieV3-app/utils"
+	jwtware "github.com/gofiber/contrib/v3/jwt"
 	"github.com/gofiber/fiber/v3"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type RatingController struct {
@@ -17,18 +19,24 @@ func NewRatingController(service services.RatingService) *RatingController {
 }
 
 func (s *RatingController) RateMovie(ctx fiber.Ctx) error {
-	userID, _ := strconv.Atoi(ctx.Get("user_id"))
+	token := jwtware.FromContext(ctx)
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	userIDFloat := claims["user_id"].(float64)
+	userID := uint(userIDFloat)
 	movieID, _ := strconv.Atoi(ctx.Params("movie_id"))
 
 	var req struct {
-		Score int `json:"score"`
+		Score  int    `json:"score"`
+		Review string `json:"review"`
 	}
 
 	if err := ctx.Bind().Body(&req); err != nil {
 		return utils.BadRequest(ctx, "Error binding body", err.Error())
 	}
 
-	if err := s.RatingService.RateMovie(uint(userID), movieID, req.Score); err != nil {
+	if err := s.RatingService.RateMovie(uint(userID), movieID, req.Score, req.Review); err != nil {
 		return utils.BadRequest(ctx, "Error rate movie", err.Error())
 	}
 
