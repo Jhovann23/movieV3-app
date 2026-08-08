@@ -9,6 +9,7 @@ import (
 
 type RatingService interface {
 	RateMovie(userID uint, movieID int, score int, review string) error
+	DeleteRatingByUser(userID uint, movieID int) error
 }
 
 type ratingService struct {
@@ -32,4 +33,8 @@ func (s *ratingService) RateMovie(userID uint, movieID int, score int, review st
 	}
 
 	return s.repo.Upsert(rating)
+}
+
+func (s *ratingService) DeleteRatingByUser(userID uint, movieID int) error {
+	return s.repo.DeleteByUserAndMovie(userID, movieID)
 }

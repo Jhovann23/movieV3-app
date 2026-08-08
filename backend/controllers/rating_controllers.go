@@ -42,3 +42,19 @@ func (s *RatingController) RateMovie(ctx fiber.Ctx) error {
 
 	return utils.Success(ctx, "Rate movie", req)
 }
+
+func (s *RatingController) DeleteRating(ctx fiber.Ctx) error {
+	token := jwtware.FromContext(ctx)
+	movieID, _ := strconv.Atoi(ctx.Params("movie_id"))
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	userIDFloat := claims["user_id"].(float64)
+	userID := uint(userIDFloat)
+
+	if err := s.RatingService.DeleteRatingByUser(userID, movieID); err != nil {
+		return utils.BadRequest(ctx, "Error deleting rating", err.Error())
+	}
+
+	return utils.Success(ctx, "Success deleting rating", nil)
+}

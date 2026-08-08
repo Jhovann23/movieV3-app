@@ -8,7 +8,8 @@ import (
 
 type RatingRepository interface {
 	Upsert(rating *models.Rating) error
-	GetByUserAndMovie(userID int64, movieID int) (*models.Rating, error)
+	GetByUserAndMovie(userID uint, movieID int) (*models.Rating, error)
+	DeleteByUserAndMovie(userID uint, movieID int) error
 }
 
 type ratingRepository struct{}
@@ -24,7 +25,7 @@ func (r *ratingRepository) Upsert(rating *models.Rating) error {
 	}).Create(rating).Error
 }
 
-func (r *ratingRepository) GetByUserAndMovie(userID int64, movieID int) (*models.Rating, error) {
+func (r *ratingRepository) GetByUserAndMovie(userID uint, movieID int) (*models.Rating, error) {
 	var rating models.Rating
 
 	err := config.DB.Where("user_id = ? AND movie_id = ?", userID, movieID).First(&rating).Error
@@ -32,4 +33,9 @@ func (r *ratingRepository) GetByUserAndMovie(userID int64, movieID int) (*models
 		return nil, err
 	}
 	return &rating, nil
+}
+
+func (r *ratingRepository) DeleteByUserAndMovie(userID uint, movieID int) error {
+	result := config.DB.Where("user_id = ? AND movie_id = ?", userID, movieID).Delete(&models.Rating{})
+	return result.Error
 }

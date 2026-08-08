@@ -25,7 +25,7 @@ func (r *watchListRepository) Add(watchList *models.Watchlist) error {
 }
 
 func (r *watchListRepository) Remove(userID uint, movieID int) error {
-	result := config.DB.Where("user_id ? AND movie_id = ?", userID, movieID).Delete(&models.Watchlist{})
+	result := config.DB.Where("user_id = ? AND movie_id = ?", userID, movieID).Delete(&models.Watchlist{})
 	if result.RowsAffected == 0 {
 		return errors.New("watch list not found")
 	}

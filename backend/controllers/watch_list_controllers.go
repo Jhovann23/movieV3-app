@@ -53,7 +53,9 @@ func (controller *WatchListController) RemoveWatchList(ctx fiber.Ctx) error {
 	userIDFloat := claims["user_id"].(float64)
 	userID := uint(userIDFloat)
 
-	controller.service.RemoveFromWatchlist(userID, movieID)
+	if err := controller.service.RemoveFromWatchlist(userID, movieID); err != nil {
+		return utils.BadRequest(ctx, "Failed remove watch list", err.Error())
+	}
 
 	return utils.Success(ctx, "Success remove watch list", nil)
 }
