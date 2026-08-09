@@ -15,9 +15,9 @@ export default function Navbar() {
 
   return (
     <div className="bg-black flex p-5">
-      <Link href="" to={"/"}>
-        <img src="/logo2.jpg" alt="Logo" className="h-[60px] object-cover" />
-      </Link>
+      {/*<Link href="" to={"/"}>*/}
+      {/*  <img src="/logo2.jpg" alt="Logo" className="h-[60px] object-cover" />*/}
+      {/*</Link>*/}
       <ShowListSearch />
       {/* <div className="w-[700px] relative m-auto">
         <input
