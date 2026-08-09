@@ -3,6 +3,9 @@ import { useNavigate } from "react-router";
 export default function UpComingMoviesCards({ id, poster, title, release }) {
   const navigate = useNavigate();
 
+  //After rewrite
+
+  //Before rewrite
   return (
     <div
       className="text-white mb-8"

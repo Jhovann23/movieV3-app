@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { imageOriginal } from "../api";
+import {getRecommendationsMovie, imageOriginal} from "../api";
 import { apiKey } from "../api";
 import axios from "axios";
 import { useParams } from "react-router";
@@ -39,13 +39,10 @@ export default function Recommendation() {
   }, [idNum]);
 
   useEffect(() => {
-    const getRecommend = async () => {
-      const movies = await axios.get(`
-        https://api.themoviedb.org/3/movie/${idNum}/recommendations?api_key=${apiKey}`);
-      const sliceMovies = movies.data.results.slice(0, 5);
-      setRecommendations(sliceMovies);
-    };
-    getRecommend();
+    getRecommendationsMovie(idNum).then((movies) => {
+      const sliceMovies = movies.slice(0, 5);
+      setRecommendations(sliceMovies)
+    })
   }, [idNum]);
   return (
     <div className="bg-black box-border" key={id}>

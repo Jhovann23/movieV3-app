@@ -2,6 +2,10 @@ import { useNavigate } from "react-router";
 
 export default function BannerDetail({ id, title, release, overview, rate, banner }) {
   const navigate = useNavigate()
+
+    //After rewrite
+
+    //Before rewrite
     return (
       <div className="relative cursor-pointer" key={id} onClick={() => navigate(`/movie/popular/${id}/${title}`)}>
         <img src={banner} className="h-[800px] object-cover w-[1440px]"/>
