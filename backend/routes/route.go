@@ -32,6 +32,7 @@ func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.Movie
 	movieGroup.Get("/upcoming", mc.GetUpcomingMovie)
 	movieGroup.Get("/top_rated", mc.GetTopRatedMovie)
 	movieGroup.Get("/search", mc.GetSearchMovie)
+	movieGroup.Get("/:movie_id/recommendations", mc.GetRecommendationsMovie)
 
 	//rating
 	ratingGroup := api.Group("/")

@@ -21,6 +21,7 @@ type MovieRepository interface {
 	GetUpcomingMovies(page int) (*models.MoviePaginatedResult, error)
 	GetTopRatedMovies(page int) (*models.MoviePaginatedResult, error)
 	GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error)
+	GetRecommendationsMovies(page int, movieID int) (*models.MoviePaginatedResult, error)
 }
 
 func NewMovieRepository(apiKey string) MovieRepository {
@@ -142,6 +143,37 @@ func (r *tmdbMovieRepository) GetSearchMovies(search string, page int) (*models.
 	}
 	movies := make([]models.Movie, len(tmdbResp.Results))
 
+	for i, movie := range tmdbResp.Results {
+		movies[i] = models.Movie{
+			ID:          movie.ID,
+			Title:       movie.Title,
+			Overview:    movie.Overview,
+			ReleaseDate: movie.ReleaseDate,
+			VoteAverage: movie.VoteAverage,
+		}
+	}
+
+	return &models.MoviePaginatedResult{
+		Movies:       movies,
+		Page:         page,
+		TotalPages:   tmdbResp.TotalPages,
+		TotalResults: tmdbResp.TotalResults,
+	}, nil
+}
+
+func (r *tmdbMovieRepository) GetRecommendationsMovies(page int, movieID int) (*models.MoviePaginatedResult, error) {
+	url := fmt.Sprintf("%s/movie/%d/recommendations?api_key=%s", r.baseURL, movieID, r.apiKey)
+	get, err := r.client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer get.Body.Close()
+
+	var tmdbResp models.TMDBListMovieResponse
+	if err := json.NewDecoder(get.Body).Decode(&tmdbResp); err != nil {
+		return nil, err
+	}
+	movies := make([]models.Movie, len(tmdbResp.Results))
 	for i, movie := range tmdbResp.Results {
 		movies[i] = models.Movie{
 			ID:          movie.ID,

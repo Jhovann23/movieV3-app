@@ -63,3 +63,21 @@ func (controller *MovieController) GetSearchMovie(ctx fiber.Ctx) error {
 	}
 	return utils.Success(ctx, "Get Search Movies", result)
 }
+
+func (controller *MovieController) GetRecommendationsMovie(ctx fiber.Ctx) error {
+	movieID, err := strconv.Atoi(ctx.Params("movie_id"))
+	if err != nil {
+		return err
+	}
+	page, err := strconv.Atoi(ctx.Params("page", "1"))
+	if err != nil {
+		return err
+	}
+
+	result, err := controller.service.GetRecommendationsMovies(page, movieID)
+	if err != nil {
+		return utils.BadRequest(ctx, "Failed to fetch API", err.Error())
+	}
+
+	return utils.Success(ctx, "Success Get API", result)
+}
