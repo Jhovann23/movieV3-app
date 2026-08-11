@@ -3,7 +3,6 @@ import { imageURL } from "../api";
 import { useEffect, useState } from "react";
 import { imageOriginal } from "../api";
 import axios from "axios";
-import { apiKey } from "../api";
 import { useNavigate } from "react-router";
 
 export default function UpcomingMovie() {

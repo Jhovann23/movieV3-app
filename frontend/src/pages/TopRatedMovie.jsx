@@ -3,7 +3,6 @@ import { useState } from "react";
 import { imageOriginal, imageURL } from "../api";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
-import { apiKey } from "../api";
 
 export default function TopRatesMovie() {
   const [recommendations, setRecommendations] = useState([]);

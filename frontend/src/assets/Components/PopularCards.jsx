@@ -13,14 +13,14 @@ export default function PopularCards({ id, title, poster, release }) {
           }}
       >
         <img
-            src={poster}
+            src={"/images/posterDummy.png"}
             alt=""
             className="w-[200px] h-[300px] rounded-2xl mr-2 hover:cursor-pointer hover:opacity-80"
         />
         <h1 className="w-[150px] font-bold mt-2 text-lg hover:text-[#01BBEB] hover:cursor-pointer">
-          {title}
+          aselole
         </h1>
-        <p>{release}</p>
+        <p>2027</p>
       </div>
   );
 

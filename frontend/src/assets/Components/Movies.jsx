@@ -44,59 +44,7 @@ export default function Movies({
                 })}
             </ul>
             <div className="flex flex-wrap object-contain mt-12">
-                {selected === 1
-                    ? topRatedMovies.map((movie) => {
-                        return (
-                            <TopRatedMoviesCards
-                                key={movie.id}
-                                title={movie.title}
-                                poster={`${imageURL}/${movie.poster_path}`}
-                                release={movie.release_date}
-                                id={movie.id}
-                            />
-                        );
-                    })
-                    : ""}
-
-                {selected === 2
-                    ? upComingMovies.map((movie) => {
-                        return (
-                            <UpComingMoviesCards
-                                key={movie.id}
-                                title={movie.title}
-                                poster={`${imageURL}/${movie.poster_path}`}
-                                release={movie.release_date}
-                                id={movie.id}
-                            />
-                        );
-                    })
-                    : ""}
-
-                {selected === 0
-                    ? popularMovies.map((movie) => {
-                        return (
-                            <PopularCards
-                                key={movie.id}
-                                title={movie.title}
-                                poster={`${imageURL}/${movie.poster_path}`}
-                                release={movie.release_date}
-                                id={movie.id}
-                            />
-                        );
-                    })
-                    : selected === 1 || selected === 2
-                        ? ""
-                        : popularMovies.map((movie) => {
-                            return (
-                                <PopularCards
-                                    key={movie.id}
-                                    title={movie.title}
-                                    poster={`${imageURL}/${movie.poster_path}`}
-                                    release={movie.release_date}
-                                    id={movie.id}
-                                />
-                            );
-                        })}
+                <PopularCards/>
             </div>
         </div>
     );

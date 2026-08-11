@@ -4,8 +4,6 @@ import { getRecommendationsMovie } from "../api";
 import { useEffect, useState } from "react";
 import { imageOriginal } from "../api";
 import axios from "axios";
-import { apiKey } from "../api";
-
 
 export default function BannerMovie() {
   const [popularMovies, setPopularMovies] = useState([]);
