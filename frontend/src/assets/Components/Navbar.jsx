@@ -1,7 +1,8 @@
 import { searchMovie } from "../../api";
 import SearchList from "./SearchList";
 import { imageURL } from "../../api";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Search, X } from "lucide-react"
 import { Link } from "react-router";
 
 export default function Navbar() {
@@ -54,6 +55,9 @@ export default function Navbar() {
 
 function ShowListSearch() {
   const [searchList, setSearchList] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const searchRef = useRef(null);
+  const inputRef = useRef(null);
   const [movie, setMovie] = useState("");
 
   const search = async (q) => {
@@ -61,22 +65,133 @@ function ShowListSearch() {
     setMovie(query);
   };
 
+  const openSearch = () => {
+        setIsOpen(true);
+
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 150);
+    };
+
+  const closeSearch = () => {
+        setIsOpen(false);
+        setSearchList("");
+    };
+
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+          if (
+              searchRef.current &&
+              !searchRef.current.contains(event.target)
+          ) {
+              closeSearch();
+          }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+
+      return () => {
+          document.removeEventListener(
+              "mousedown",
+              handleClickOutside
+          );
+      };
+  }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isOpen) {
+                closeSearch();
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [isOpen]);
+
   return (
-    <div className="w-[700px] relative m-auto flex ">
-      <input
-        type="text"
-        placeholder="Search Movie"
-        className="w-[700px] text-black p-1 rounded-sm focus:outline-none focus:ring-4 focus:border-[#01BBEB] "
-        value={searchList}
-        onChange={({ target }) => {
-          setSearchList(target.value);
-          search(target.value);
-        }}
-      />
-      <button className="bg-white ml-4 pl-3 pr-3 font-semibold rounded-xl hover:bg-[#121212] hover:text-white" onClick={() => {
-        setSearchList("")
-        setMovie([])
-      }}>X</button>
+    <div className="w-[1200px] relative m-auto flex justify-end">
+        {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
+
+        <div className={"text-white font-bold"}>
+            <nav className={"flex"}>
+                <ul className={"flex gap-8 mt-2 mr-8"}>
+                    <li><a>List</a></li>
+                    <li><a>Login</a></li>
+                    <li><a>Register</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        {!isOpen && (
+            <button
+                onClick={openSearch}
+                className="
+            flex
+            h-10
+            w-10
+            items-center
+            justify-center
+            rounded-full
+            text-white
+            transition
+            duration-200
+            hover:bg-white/10
+          "
+                aria-label="Search"
+            ><Search color={"white"} size={30}/></button>
+            // eslint-disable-next-line react/jsx-no-comment-textnodes
+        )}
+
+
+        {isOpen && (
+            <div
+                className="
+            flex
+            h-10
+            w-60
+            items-center
+            rounded-md
+            bg-white
+            px-3
+            shadow-lg
+            animate-[searchExpand_300ms_ease-out]
+          "
+            ><Search color={"white"} size={25}
+            />
+                <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Search Movie"
+                    className="w-[700px] text-black p-1 rounded-sm focus:outline-none focus:ring-4 focus:border-[#01BBEB] "
+                    value={searchList}
+                    onChange={({ target }) => {
+                        setSearchList(target.value);
+                        search(target.value);
+                    }}
+                />
+                <button
+                    onClick={closeSearch}
+                    className="
+                        ml-2
+                        flex
+                        shrink-0
+                        items-center
+                        justify-center
+                        text-gray-500
+                        transition
+                        hover:text-gray-900
+                        "
+                        aria-label="Close search"
+                >
+                    <X size={20} />
+                </button>
+            </div>
+        )}
+
       <ul className="bg-black mt-[50px] absolute z-20 w-full rounded-lg " onClick={() => { 
         setMovie([])
         setSearchList("")

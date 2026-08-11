@@ -10,6 +10,7 @@ import (
 	"github.com/Jhovann23/movieV3-app/routes"
 	"github.com/Jhovann23/movieV3-app/services"
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 )
 
 func main() {
@@ -18,6 +19,12 @@ func main() {
 
 	seed.SeedAdmin()
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{"GET,POST,PUT,DELETE,OPTIONS"},
+		AllowHeaders: []string{"Origin, Content-Type, Accept, Authorization"},
+	}))
 
 	//injection manual atau rakit manual
 	userRepository := repositories.NewUserRepository()

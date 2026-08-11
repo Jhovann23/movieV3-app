@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router";
 import { getMovieListPopular, imageURL } from "../api";
 import { getRecommendationsMovie } from "../api";
 import { useEffect, useState } from "react";
+import { Plus, StarPlus } from "lucide-react"
 import { imageOriginal } from "../api";
 import axios from "axios";
 
@@ -68,16 +69,29 @@ export default function BannerMovie() {
               className="w-[250px] rounded-md drop-shadow-2xl"
           />
           <div className="text-white ml-8 ">
-            <h1 className="font-bold text-5xl">spidermen</h1>
+            <h1 className="font-bold text-5xl">spidermen <span className={"font-thin"}>(2024)</span></h1>
             <div className="text-xl mb-2 mt-2">
               <span className="mr-4">20 mins</span>
-              <span className="mr-2">2024</span>
                   <p className="mt-2">
                     awikwok
                   </p>
             </div>
             <p className="text-xl mb-2">5</p>
             <p className="w-[650px] mb-12">acikiwr aselole mbg anjing</p>
+
+            <div className={"text-white bg-black/50 p-3.5 rounded-lg w-[50%]"}>
+              <div className={"flex mb-3 border-b-2 border-b-white py-2 pb-3.5 font-semibold"}>
+                <Plus className={"mr-2"}/>
+                <button>Tambahkan Ke Watchlist</button>
+              </div>
+              <div className={"py-2 flex"}>
+                <StarPlus className={"mr-2"}/>
+              <span className={"font-semibold"}>
+                Review & Rate
+              </span>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>

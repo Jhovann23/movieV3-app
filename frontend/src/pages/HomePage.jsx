@@ -4,6 +4,7 @@ import { getMovieListPopular, getMovieTopRated, getMovieUpComing } from "../api"
 
 import Banner from "../assets/Components/Banner";
 import Movies from "../assets/Components/Movies";
+import BannerDetail from "../assets/Components/BannerDetail.jsx";
 
 export default function HomePage() {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -30,7 +31,7 @@ export default function HomePage() {
 
   return (
     <div className="bg-black box-border">
-      <Banner popularMovies={popularMovies} />
+      {/*<Banner popularMovies={popularMovies} />*/}
       <Movies
         popularMovies={popularMovies}
         topRatedMovies={topRatedMovies}
