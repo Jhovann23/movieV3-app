@@ -50,11 +50,13 @@ func (r *tmdbMovieRepository) GetPopularMovies(page int) (*models.MoviePaginated
 	movies := make([]models.Movie, len(tmdbResp.Results))
 	for i, movie := range tmdbResp.Results {
 		movies[i] = models.Movie{
-			ID:          movie.ID,
-			Title:       movie.Title,
-			Overview:    movie.Overview,
-			ReleaseDate: movie.ReleaseDate,
-			VoteAverage: movie.VoteAverage,
+			ID:           movie.ID,
+			Title:        movie.Title,
+			Overview:     movie.Overview,
+			ReleaseDate:  movie.ReleaseDate,
+			VoteAverage:  movie.VoteAverage,
+			BackdropPath: movie.BackdropPath,
+			PosterPath:   movie.PosterPath,
 		}
 	}
 
@@ -82,11 +84,13 @@ func (r *tmdbMovieRepository) GetUpcomingMovies(page int) (*models.MoviePaginate
 	movies := make([]models.Movie, len(tmdbResp.Results))
 	for i, movie := range tmdbResp.Results {
 		movies[i] = models.Movie{
-			ID:          movie.ID,
-			Title:       movie.Title,
-			Overview:    movie.Overview,
-			ReleaseDate: movie.ReleaseDate,
-			VoteAverage: movie.VoteAverage,
+			ID:           movie.ID,
+			Title:        movie.Title,
+			Overview:     movie.Overview,
+			ReleaseDate:  movie.ReleaseDate,
+			VoteAverage:  movie.VoteAverage,
+			PosterPath:   movie.PosterPath,
+			BackdropPath: movie.BackdropPath,
 		}
 	}
 
@@ -113,11 +117,13 @@ func (r *tmdbMovieRepository) GetTopRatedMovies(page int) (*models.MoviePaginate
 	movies := make([]models.Movie, len(tmdbResp.Results))
 	for i, movie := range tmdbResp.Results {
 		movies[i] = models.Movie{
-			ID:          movie.ID,
-			Title:       movie.Title,
-			Overview:    movie.Overview,
-			ReleaseDate: movie.ReleaseDate,
-			VoteAverage: movie.VoteAverage,
+			ID:           movie.ID,
+			Title:        movie.Title,
+			Overview:     movie.Overview,
+			ReleaseDate:  movie.ReleaseDate,
+			VoteAverage:  movie.VoteAverage,
+			PosterPath:   movie.PosterPath,
+			BackdropPath: movie.BackdropPath,
 		}
 	}
 
@@ -145,11 +151,13 @@ func (r *tmdbMovieRepository) GetSearchMovies(search string, page int) (*models.
 
 	for i, movie := range tmdbResp.Results {
 		movies[i] = models.Movie{
-			ID:          movie.ID,
-			Title:       movie.Title,
-			Overview:    movie.Overview,
-			ReleaseDate: movie.ReleaseDate,
-			VoteAverage: movie.VoteAverage,
+			ID:           movie.ID,
+			Title:        movie.Title,
+			Overview:     movie.Overview,
+			ReleaseDate:  movie.ReleaseDate,
+			VoteAverage:  movie.VoteAverage,
+			PosterPath:   movie.PosterPath,
+			BackdropPath: movie.BackdropPath,
 		}
 	}
 
@@ -176,11 +184,13 @@ func (r *tmdbMovieRepository) GetRecommendationsMovies(page int, movieID int) (*
 	movies := make([]models.Movie, len(tmdbResp.Results))
 	for i, movie := range tmdbResp.Results {
 		movies[i] = models.Movie{
-			ID:          movie.ID,
-			Title:       movie.Title,
-			Overview:    movie.Overview,
-			ReleaseDate: movie.ReleaseDate,
-			VoteAverage: movie.VoteAverage,
+			ID:           movie.ID,
+			Title:        movie.Title,
+			Overview:     movie.Overview,
+			ReleaseDate:  movie.ReleaseDate,
+			VoteAverage:  movie.VoteAverage,
+			PosterPath:   movie.PosterPath,
+			BackdropPath: movie.BackdropPath,
 		}
 	}
 

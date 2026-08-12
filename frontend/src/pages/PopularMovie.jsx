@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { getMovieListPopular, imageURL } from "../api";
+import {apiKey, getMovieListPopular, imageURL} from "../api";
 import { getRecommendationsMovie } from "../api";
 import { useEffect, useState } from "react";
 import { Plus, StarPlus } from "lucide-react"
@@ -62,7 +62,7 @@ export default function BannerMovie() {
           />
         </div>
 
-        <div className="flex p-12 mt-[-450px] brightness-100 items-center">
+        <div className="flex p-12 mt-[-480px] brightness-100 items-center">
           <img
               src={"/images/posterDummy.png"}
               alt=""
@@ -77,21 +77,21 @@ export default function BannerMovie() {
                   </p>
             </div>
             <p className="text-xl mb-2">5</p>
-            <p className="w-[650px] mb-12">acikiwr aselole mbg anjing</p>
+            <p className="w-[650px] mb-12">acikiwr aselole</p>
+          </div>
 
-            <div className={"text-white bg-black/50 p-3.5 rounded-lg w-[50%]"}>
-              <div className={"flex mb-3 border-b-2 border-b-white py-2 pb-3.5 font-semibold"}>
-                <Plus className={"mr-2"}/>
-                <button>Tambahkan Ke Watchlist</button>
-              </div>
-              <div className={"py-2 flex"}>
-                <StarPlus className={"mr-2"}/>
+          <div className={"text-white bg-black border-2 border-[#2C3440] p-3.5 rounded-lg w-[25%] h-[150px]"}>
+            <div className={"flex mb-3 border-b-2 border-b-white py-2 pb-3.5 font-semibold"}>
+              <Plus className={"mr-2"}/>
+              <button>Tambahkan Ke Watchlist</button>
+            </div>
+            <div className={"py-2 flex"}>
+              <StarPlus className={"mr-2"}/>
               <span className={"font-semibold"}>
                 Review & Rate
               </span>
-              </div>
-
             </div>
+
           </div>
         </div>
       </div>

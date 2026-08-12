@@ -113,23 +113,32 @@ function ShowListSearch() {
     }, [isOpen]);
 
   return (
-    <div className="w-[1200px] relative m-auto flex justify-end">
+    <div className="w-[1200px] relative m-auto flex justify-between">
         {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
 
-        <div className={"text-white font-bold"}>
-            <nav className={"flex"}>
-                <ul className={"flex gap-8 mt-2 mr-8"}>
-                    <li><a>List</a></li>
-                    <li><a>Login</a></li>
-                    <li><a>Register</a></li>
-                </ul>
-            </nav>
+        <div className={""}>
+            <ul className={"flex gap-8 items-center py-2"}>
+                <li className={"text-[#01BBEB] font-bold text-3xl mr-12"}>CineHub</li>
+                <div className={"flex gap-8"}>
+                    <li className={"text-white font-bold cursor-pointer hover:text-[#01BBEB]"}>Watchlist</li>
+                    <li className={"text-white font-bold cursor-pointer hover:text-[#01BBEB]"}>My Rating</li>
+                </div>
+            </ul>
         </div>
 
-        {!isOpen && (
-            <button
-                onClick={openSearch}
-                className="
+        <div className={"flex"}>
+            <div className={"text-white font-bold"}>
+                <ul className={"flex gap-8 mr-8 items-center py-1"}>
+                    <li className={"border-2 border-[#445566] px-3 py-2 rounded-md cursor-pointer hover:bg-[#01BBEB]"}><a>Login</a></li>
+                    <li className={"bg-[#01BBEB] text-black px-3 py-2 rounded-md cursor-pointer hover:text-white"}><a>Sign In</a></li>
+                </ul>
+            </div>
+
+
+            {!isOpen && (
+                <button
+                    onClick={openSearch}
+                    className="
             flex
             h-10
             w-10
@@ -140,18 +149,19 @@ function ShowListSearch() {
             transition
             duration-200
             hover:bg-white/10
+            py-1
           "
-                aria-label="Search"
-            ><Search color={"white"} size={30}/></button>
-            // eslint-disable-next-line react/jsx-no-comment-textnodes
-        )}
+                    aria-label="Search"
+                ><Search color={"white"} size={30} className={"mt-2"}/></button>
+                // eslint-disable-next-line react/jsx-no-comment-textnodes
+            )}
 
 
-        {isOpen && (
-            <div
-                className="
+            {isOpen && (
+                <div
+                    className="
             flex
-            h-10
+            h-9
             w-60
             items-center
             rounded-md
@@ -159,23 +169,24 @@ function ShowListSearch() {
             px-3
             shadow-lg
             animate-[searchExpand_300ms_ease-out]
+            mt-2
           "
-            ><Search color={"white"} size={25}
-            />
-                <input
-                    ref={inputRef}
-                    type="text"
-                    placeholder="Search Movie"
-                    className="w-[700px] text-black p-1 rounded-sm focus:outline-none focus:ring-4 focus:border-[#01BBEB] "
-                    value={searchList}
-                    onChange={({ target }) => {
-                        setSearchList(target.value);
-                        search(target.value);
-                    }}
+                ><Search color={"white"} size={25} className={"mt-2"}
                 />
-                <button
-                    onClick={closeSearch}
-                    className="
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        placeholder="Search Movie"
+                        className="w-[700px] text-black p-1 rounded-sm focus:outline-none focus:ring-4 focus:border-[#01BBEB]"
+                        value={searchList}
+                        onChange={({ target }) => {
+                            setSearchList(target.value);
+                            search(target.value);
+                        }}
+                    />
+                    <button
+                        onClick={closeSearch}
+                        className="
                         ml-2
                         flex
                         shrink-0
@@ -186,11 +197,14 @@ function ShowListSearch() {
                         hover:text-gray-900
                         "
                         aria-label="Close search"
-                >
-                    <X size={20} />
-                </button>
-            </div>
-        )}
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
+            )}
+        </div>
+
+
 
       <ul className="bg-black mt-[50px] absolute z-20 w-full rounded-lg " onClick={() => { 
         setMovie([])

@@ -31,7 +31,7 @@ export default function HomePage() {
 
   return (
     <div className="bg-black box-border">
-      {/*<Banner popularMovies={popularMovies} />*/}
+      <Banner popularMovies={popularMovies} />
       <Movies
         popularMovies={popularMovies}
         topRatedMovies={topRatedMovies}
