@@ -13,6 +13,8 @@ type MovieService interface {
 	GetTopRatedMovies(page int) (*models.MoviePaginatedResult, error)
 	GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error)
 	GetRecommendationsMovies(page, movieID int) (*models.MoviePaginatedResult, error)
+	GetDetailsMovies(page, movieID int) (*models.MovieDetailPaginatedResult, error)
+	GetCreditsMovies(page, movieID int) (*models.MovieCreditPaginatedResult, error)
 }
 
 type movieService struct {
@@ -56,8 +58,23 @@ func (s *movieService) GetSearchMovies(search string, page int) (*models.MoviePa
 }
 
 func (s *movieService) GetRecommendationsMovies(page, movieID int) (*models.MoviePaginatedResult, error) {
-	if movieID < 1 {
-		return nil, errors.New("movieID is required")
+	if page < 1 {
+		page = 1
 	}
 	return s.repo.GetRecommendationsMovies(page, movieID)
+}
+
+func (s *movieService) GetDetailsMovies(page, movieID int) (*models.MovieDetailPaginatedResult, error) {
+	if page < 1 {
+		page = 1
+	}
+
+	return s.repo.GetDetails(page, movieID)
+}
+
+func (s *movieService) GetCreditsMovies(page, movieID int) (*models.MovieCreditPaginatedResult, error) {
+	if page < 1 {
+		page = 1
+	}
+	return s.repo.GetCredits(page, movieID)
 }

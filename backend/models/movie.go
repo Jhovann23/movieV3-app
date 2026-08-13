@@ -11,8 +11,39 @@ type Movie struct {
 }
 
 type MoviePaginatedResult struct {
-	Movies       []Movie
-	Page         int
-	TotalPages   int
-	TotalResults int
+	Movies       []Movie `json:"movies"`
+	Page         int     `json:"page"`
+	TotalPages   int     `json:"total_pages"`
+	TotalResults int     `json:"total_results"`
+}
+
+type MovieDetailResult struct {
+	ID          int      `json:"id"`
+	PosterPath  string   `json:"poster_path"`
+	Runtime     string   `json:"runtime"`
+	ReleaseDate string   `json:"release_date"`
+	VoteAverage float64  `json:"vote_average"`
+	Genres      []string `json:"genres"`
+	Overview    string   `json:"overview"`
+}
+
+type MovieDetailPaginatedResult struct {
+	Movies       []MovieDetailResult `json:"movies"`
+	Page         int                 `json:"page"`
+	TotalPages   int                 `json:"total_pages"`
+	TotalResults int                 `json:"total_results"`
+}
+
+type MovieCredit struct {
+	CastId      int    `json:"cast_id"`
+	Name        string `json:"name"`
+	ProfilePath string `json:"profile_path"`
+	Character   string `json:"character"`
+}
+
+type MovieCreditPaginatedResult struct {
+	Cast         []MovieCredit `json:"cast"`
+	Page         int           `json:"page"`
+	TotalPages   int           `json:"total_pages"`
+	TotalResults int           `json:"total_results"`
 }

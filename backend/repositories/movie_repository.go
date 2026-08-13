@@ -22,6 +22,8 @@ type MovieRepository interface {
 	GetTopRatedMovies(page int) (*models.MoviePaginatedResult, error)
 	GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error)
 	GetRecommendationsMovies(page int, movieID int) (*models.MoviePaginatedResult, error)
+	GetDetails(page, movieID int) (*models.MovieDetailPaginatedResult, error)
+	GetCredits(page, movieID int) (*models.MovieCreditPaginatedResult, error)
 }
 
 func NewMovieRepository(apiKey string) MovieRepository {
@@ -196,6 +198,67 @@ func (r *tmdbMovieRepository) GetRecommendationsMovies(page int, movieID int) (*
 
 	return &models.MoviePaginatedResult{
 		Movies:       movies,
+		Page:         page,
+		TotalPages:   tmdbResp.TotalPages,
+		TotalResults: tmdbResp.TotalResults,
+	}, nil
+}
+
+func (r *tmdbMovieRepository) GetDetails(page, movieID int) (*models.MovieDetailPaginatedResult, error) {
+	url := fmt.Sprintf("%s/movie/%d?api_key=%s", r.baseURL, movieID, r.apiKey)
+	get, err := r.client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer get.Body.Close()
+
+	var tmdbResp models.TMDBListMovieResponse
+	if err := json.NewDecoder(get.Body).Decode(&tmdbResp); err != nil {
+		return nil, err
+	}
+	movies := make([]models.MovieDetailResult, len(tmdbResp.Results))
+	for i, movie := range tmdbResp.Results {
+		movies[i] = models.MovieDetailResult{
+			ID:          movie.ID,
+			Overview:    movie.Overview,
+			ReleaseDate: movie.ReleaseDate,
+			VoteAverage: movie.VoteAverage,
+			PosterPath:  movie.PosterPath,
+		}
+	}
+
+	return &models.MovieDetailPaginatedResult{
+		Movies:       movies,
+		Page:         page,
+		TotalPages:   tmdbResp.TotalPages,
+		TotalResults: tmdbResp.TotalResults,
+	}, nil
+}
+
+func (r *tmdbMovieRepository) GetCredits(page, movieID int) (*models.MovieCreditPaginatedResult, error) {
+	url := fmt.Sprintf("%s/movie/%d/credits?api_key=%s", r.baseURL, movieID, r.apiKey)
+	get, err := r.client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer get.Body.Close()
+
+	var tmdbResp models.TMDBMovieCreditResponse
+	if err := json.NewDecoder(get.Body).Decode(&tmdbResp); err != nil {
+		return nil, err
+	}
+	movies := make([]models.MovieCredit, len(tmdbResp.Cast))
+	for i, movie := range tmdbResp.Cast {
+		movies[i] = models.MovieCredit{
+			CastId:      movie.ID,
+			Name:        movie.Name,
+			ProfilePath: movie.ProfilePath,
+			Character:   movie.Character,
+		}
+	}
+
+	return &models.MovieCreditPaginatedResult{
+		Cast:         movies,
 		Page:         page,
 		TotalPages:   tmdbResp.TotalPages,
 		TotalResults: tmdbResp.TotalResults,

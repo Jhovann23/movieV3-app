@@ -113,12 +113,14 @@ function ShowListSearch() {
     }, [isOpen]);
 
   return (
-    <div className="w-[1200px] relative m-auto flex justify-between">
+    <div className="w-[1200px] relative m-auto flex justify-between font-heading">
         {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
 
         <div className={""}>
             <ul className={"flex gap-8 items-center py-2"}>
-                <li className={"text-[#01BBEB] font-bold text-3xl mr-12"}>CineHub</li>
+                <Link to={"/"}>
+                    <li className={"text-[#01BBEB] font-bold text-3xl mr-12"}>CineHub</li>
+                </Link>
                 <div className={"flex gap-8"}>
                     <li className={"text-white font-bold cursor-pointer hover:text-[#01BBEB]"}>Watchlist</li>
                     <li className={"text-white font-bold cursor-pointer hover:text-[#01BBEB]"}>My Rating</li>
