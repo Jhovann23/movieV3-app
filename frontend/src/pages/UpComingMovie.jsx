@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { imageURL } from "../api";
+import {getRecommendationsMovie, imageURL} from "../api";
 import { useEffect, useState } from "react";
 import { imageOriginal } from "../api";
 import axios from "axios";
@@ -14,12 +14,17 @@ export default function UpcomingMovie() {
   const navigate = useNavigate()
   const idNum = parseInt(id);
 
+  const runtime = parseInt(detail.runtime)
+
+  const jam = Math.floor(runtime / 60);
+  const sisaMenit = runtime % 60;
+
   useEffect(() => {
     const getDetails = async () => {
       const movie = await axios.get(
-        `https://api.themoviedb.org/3/movie/${idNum}?api_key=${apiKey}`
+        `http://127.0.0.1:3030/movies/${idNum}/details`
       );
-      setDetail(movie.data);
+      setDetail(movie.data.data);
     };
     getDetails();
   }, [idNum]);
@@ -27,24 +32,21 @@ export default function UpcomingMovie() {
   useEffect(() => {
     const getCredit = async () => {
       const credits = await axios.get(
-        `https://api.themoviedb.org/3/movie/${idNum}/credits?api_key=${apiKey}`
+        `http://127.0.0.1:3030/movies/${idNum}/credits`
       );
-      const sliceCredits = credits.data.cast.slice(0, 9);
+      const sliceCredits = credits.data.data.cast.slice(0, 9);
       setCredits(sliceCredits);
     };
     getCredit();
   }, [idNum]);
 
   useEffect(() => {
-    const getRecommend = async () => {
-      const movies = await axios.get(
-        `https://api.themoviedb.org/3/movie/${idNum}/recommendations?api_key=${apiKey}`
-      );
-      const sliceMovies = movies.data.results.slice(0, 5);
-      setRecommendations(sliceMovies);
-    };
-    getRecommend();
-  }, [idNum]);
+        getRecommendationsMovie(idNum).then((movies) => {
+          const sliceMovies = movies.slice(0, 5);
+          setRecommendations(sliceMovies)
+        })
+      }, [idNum]
+  )
 
   return (
     <div className="bg-black box-border" key={id}>
@@ -62,9 +64,9 @@ export default function UpcomingMovie() {
           className="w-[250px] rounded-md drop-shadow-2xl"
         />
         <div className="text-white ml-8 ">
-          <h1 className="font-bold text-5xl">{title}</h1>
-          <div className="text-xl mb-2 mt-2">
-            <span className="mr-4">{detail.runtime} mins</span>
+          <h1 className="font-bold text-5xl font-heading">{title}</h1>
+          <div className="text-xl mb-2 mt-2 font-body">
+            <span className="mr-4">{jam}h {sisaMenit}m</span>
             <span className="mr-2">{detail.release_date}</span>
             {detail.genres && detail.genres.length > 0 && (
               <p className="mt-2">
@@ -72,30 +74,30 @@ export default function UpcomingMovie() {
               </p>
             )}
           </div>
-          <p className="text-xl mb-2">{detail.vote_average}</p>
-          <p className="w-[650px] mb-12">{detail.overview}</p>
+          <p className="text-xl mb-2 font-body">{detail.vote_average}</p>
+          <p className="w-[650px] mb-12 font-body">{detail.overview}</p>
         </div>
       </div>
 
       <div className="w-[1200px] m-auto ">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4">Top Cast</h1>
+        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">Top Cast</h1>
         <div className="flex flex-wrap ">
           {credits.map((credit) => {
             return (
               <div
-                className=" mb-8 border-white rounded-t-2xl mr-2 hover:cursor-pointer "
+                className=" mb-8 border-white rounded-t-lg mr-4 hover:cursor-pointer "
                 key={credit.id}
               >
                 <img
                   src={`${imageURL}/${credit.profile_path}`}
                   alt=""
-                  className="w-[170px] h-[200px] object-cover rounded-t-2xl"
+                  className="w-[138px] h-[175px] object-cover rounded-t-lg"
                 />
-                <div className=" w-[170px] h-[90px] bg-white rounded-b-2xl">
-                  <h1 className="font-bold pt-2 pl-2 text-base hover:text-[#01BBEB] hover:cursor-pointer ">
+                <div className=" w-[138px] h-[90px] bg-white rounded-b-lg">
+                  <h1 className="font-bold pt-2 pl-2 text-base hover:text-[#01BBEB] hover:cursor-pointer font-heading">
                     {credit.name}
                   </h1>
-                  <h1 className="pb-4 pl-2 w-[180px]">{credit.character}</h1>
+                  <h1 className="pb-4 pl-2 w-[138px] text-xs font-body">{credit.character}</h1>
                 </div>
               </div>
             );
@@ -119,7 +121,7 @@ export default function UpcomingMovie() {
         </div>
       </div>
       <div className="w-[1200px] h-[400px] m-auto">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4">
+        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">
           Recommendations
         </h1>
         <div className="flex gap-4 hover:cursor-pointer">
@@ -139,8 +141,8 @@ export default function UpcomingMovie() {
                   className="rounded-t-xl"
                 />
                 <div className="bg-white p-3 h-[100px] hover:bg-[#01BBEB] rounded-b-lg">
-                  <h1 className="font-semibold">{movie.title}</h1>
-                  <h1>{movie.release_date}</h1>
+                  <h1 className="font-semibold font-heading">{movie.title}</h1>
+                  <h1 className={"font-body"}>{movie.release_date}</h1>
                 </div>
               </div>
             );

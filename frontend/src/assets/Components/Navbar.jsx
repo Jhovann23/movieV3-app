@@ -131,8 +131,8 @@ function ShowListSearch() {
         <div className={"flex"}>
             <div className={"text-white font-bold"}>
                 <ul className={"flex gap-8 mr-8 items-center py-1"}>
-                    <li className={"border-2 border-[#445566] px-3 py-2 rounded-md cursor-pointer hover:bg-[#01BBEB]"}><a>Login</a></li>
-                    <li className={"bg-[#01BBEB] text-black px-3 py-2 rounded-md cursor-pointer hover:text-white"}><a>Sign In</a></li>
+                    <li className={"border-2 border-[#445566] px-3 py-2 rounded-md cursor-pointer hover:bg-[#01BBEB]"}><Link to={"/login"}>Login</Link></li>
+                    <li className={"bg-[#01BBEB] text-black px-3 py-2 rounded-md cursor-pointer hover:text-white"}><Link to={"/register"}>Sign up</Link></li>
                 </ul>
             </div>
 
@@ -168,7 +168,6 @@ function ShowListSearch() {
             items-center
             rounded-md
             bg-white
-            px-3
             shadow-lg
             animate-[searchExpand_300ms_ease-out]
             mt-2
@@ -190,6 +189,7 @@ function ShowListSearch() {
                         onClick={closeSearch}
                         className="
                         ml-2
+                        mr-2
                         flex
                         shrink-0
                         items-center
