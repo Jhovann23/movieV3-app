@@ -22,7 +22,7 @@ type MovieRepository interface {
 	GetTopRatedMovies(page int) (*models.MoviePaginatedResult, error)
 	GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error)
 	GetRecommendationsMovies(page int, movieID int) (*models.MoviePaginatedResult, error)
-	GetDetails(page, movieID int) (*models.MovieDetailPaginatedResult, error)
+	GetDetails(page, movieID int) (*models.MovieDetailResult, error)
 	GetCredits(page, movieID int) (*models.MovieCreditPaginatedResult, error)
 }
 
@@ -204,7 +204,7 @@ func (r *tmdbMovieRepository) GetRecommendationsMovies(page int, movieID int) (*
 	}, nil
 }
 
-func (r *tmdbMovieRepository) GetDetails(page, movieID int) (*models.MovieDetailPaginatedResult, error) {
+func (r *tmdbMovieRepository) GetDetails(page, movieID int) (*models.MovieDetailResult, error) {
 	url := fmt.Sprintf("%s/movie/%d?api_key=%s", r.baseURL, movieID, r.apiKey)
 	get, err := r.client.Get(url)
 	if err != nil {
@@ -212,27 +212,23 @@ func (r *tmdbMovieRepository) GetDetails(page, movieID int) (*models.MovieDetail
 	}
 	defer get.Body.Close()
 
-	var tmdbResp models.TMDBListMovieResponse
+	var tmdbResp models.TMDBMovieDetails
 	if err := json.NewDecoder(get.Body).Decode(&tmdbResp); err != nil {
 		return nil, err
 	}
-	movies := make([]models.MovieDetailResult, len(tmdbResp.Results))
-	for i, movie := range tmdbResp.Results {
-		movies[i] = models.MovieDetailResult{
-			ID:          movie.ID,
-			Overview:    movie.Overview,
-			ReleaseDate: movie.ReleaseDate,
-			VoteAverage: movie.VoteAverage,
-			PosterPath:  movie.PosterPath,
-		}
-	}
 
-	return &models.MovieDetailPaginatedResult{
-		Movies:       movies,
-		Page:         page,
-		TotalPages:   tmdbResp.TotalPages,
-		TotalResults: tmdbResp.TotalResults,
+	return &models.MovieDetailResult{
+		ID:           tmdbResp.ID,
+		PosterPath:   tmdbResp.PosterPath,
+		Runtime:      tmdbResp.Runtime,
+		ReleaseDate:  tmdbResp.ReleaseDate,
+		VoteAverage:  tmdbResp.VoteAverage,
+		Genres:       tmdbResp.Genres,
+		Overview:     tmdbResp.Overview,
+		BackdropPath: tmdbResp.BackDropPath,
+		Title:        tmdbResp.Title,
 	}, nil
+
 }
 
 func (r *tmdbMovieRepository) GetCredits(page, movieID int) (*models.MovieCreditPaginatedResult, error) {
@@ -243,7 +239,7 @@ func (r *tmdbMovieRepository) GetCredits(page, movieID int) (*models.MovieCredit
 	}
 	defer get.Body.Close()
 
-	var tmdbResp models.TMDBMovieCreditResponse
+	var tmdbResp models.TMDBMovieCredit
 	if err := json.NewDecoder(get.Body).Decode(&tmdbResp); err != nil {
 		return nil, err
 	}
@@ -258,9 +254,6 @@ func (r *tmdbMovieRepository) GetCredits(page, movieID int) (*models.MovieCredit
 	}
 
 	return &models.MovieCreditPaginatedResult{
-		Cast:         movies,
-		Page:         page,
-		TotalPages:   tmdbResp.TotalPages,
-		TotalResults: tmdbResp.TotalResults,
+		Cast: movies,
 	}, nil
 }

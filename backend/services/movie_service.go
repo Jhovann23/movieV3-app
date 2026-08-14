@@ -13,7 +13,7 @@ type MovieService interface {
 	GetTopRatedMovies(page int) (*models.MoviePaginatedResult, error)
 	GetSearchMovies(search string, page int) (*models.MoviePaginatedResult, error)
 	GetRecommendationsMovies(page, movieID int) (*models.MoviePaginatedResult, error)
-	GetDetailsMovies(page, movieID int) (*models.MovieDetailPaginatedResult, error)
+	GetDetailsMovies(page, movieID int) (*models.MovieDetailResult, error)
 	GetCreditsMovies(page, movieID int) (*models.MovieCreditPaginatedResult, error)
 }
 
@@ -64,7 +64,7 @@ func (s *movieService) GetRecommendationsMovies(page, movieID int) (*models.Movi
 	return s.repo.GetRecommendationsMovies(page, movieID)
 }
 
-func (s *movieService) GetDetailsMovies(page, movieID int) (*models.MovieDetailPaginatedResult, error) {
+func (s *movieService) GetDetailsMovies(page, movieID int) (*models.MovieDetailResult, error) {
 	if page < 1 {
 		page = 1
 	}

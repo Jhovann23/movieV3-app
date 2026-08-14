@@ -24,11 +24,8 @@ type TMDBMovieRaw struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
-type TMDBMovieCreditResponse struct {
-	Page         int                  `json:"page"`
-	Cast         []TMDBMovieCreditRaw `json:"cast"`
-	TotalPages   int                  `json:"total_pages"`
-	TotalResults int                  `json:"total_results"`
+type TMDBMovieCredit struct {
+	Cast []TMDBMovieCreditRaw `json:"cast"`
 }
 
 type TMDBMovieCreditRaw struct {
@@ -36,4 +33,22 @@ type TMDBMovieCreditRaw struct {
 	Name        string `json:"name"`
 	ProfilePath string `json:"profile_path"`
 	Character   string `json:"character"`
+}
+
+type TMDBMovieDetails struct {
+	ID           int     `json:"id"`
+	Title        string  `json:"original_title"`
+	BackDropPath string  `json:"backdrop_path"`
+	Genres       []Genre `json:"genres"`
+	VoteAverage  float64 `json:"vote_average"`
+	Runtime      int     `json:"runtime"`
+	ReleaseDate  string  `json:"release_date"`
+	PosterPath   string  `json:"poster_path"`
+	Overview     string  `json:"overview"`
+	Character    string  `json:"character"`
+}
+
+type Genre struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
