@@ -32,7 +32,7 @@ export default function RegisterForm() {
                     {/* Header / Branding */}
                     <div className="text-center mb-6">
                         <h1 className="text-2xl font-extrabold text-[#01BBEB] tracking-tight mb-1">
-                            CineList
+                            CineHub
                         </h1>
                         <h2 className="text-xl font-bold text-white mb-2">
                             Join the Club
