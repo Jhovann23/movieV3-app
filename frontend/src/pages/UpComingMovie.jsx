@@ -80,12 +80,12 @@ export default function UpcomingMovie() {
       </div>
 
       <div className="w-[1200px] m-auto ">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">Top Cast</h1>
+        <h1 className="text-white font-bold text-4xl py-4 mb-4 font-heading">Top Cast</h1>
         <div className="flex flex-wrap ">
           {credits.map((credit) => {
             return (
               <div
-                className=" mb-8 border-white rounded-t-lg mr-4 hover:cursor-pointer "
+                className=" mb-4 border-white rounded-t-lg mr-4 hover:cursor-pointer "
                 key={credit.id}
               >
                 <img
@@ -94,7 +94,7 @@ export default function UpcomingMovie() {
                   className="w-[138px] h-[175px] object-cover rounded-t-lg"
                 />
                 <div className=" w-[138px] h-[90px] bg-white rounded-b-lg">
-                  <h1 className="font-bold pt-2 pl-2 text-base hover:text-[#01BBEB] hover:cursor-pointer font-heading">
+                  <h1 className="font-bold pt-2 pl-2 text-sm hover:text-[#01BBEB] hover:cursor-pointer font-heading">
                     {credit.name}
                   </h1>
                   <h1 className="pb-4 pl-2 w-[138px] text-xs font-body">{credit.character}</h1>
@@ -103,25 +103,10 @@ export default function UpcomingMovie() {
             );
           })}
 
-          {/* <div className=" mb-8 border-2 border-white rounded-2xl mr-2 hover:cursor-pointer ">
-            <img
-              src="/expPoster.jpg"
-              alt=""
-              className="w-[200px] h-[300px] object-cover rounded-2xl"
-            />
-            <div className=" w-full bg-white rounded-b-2xl">
-              <h1 className="font-bold pt-4 pl-4 text-lg hover:text-[#01BBEB] hover:cursor-pointer ">
-                Abdul
-              </h1>
-              <h1 className="pb-4 pl-4 w-[200px]">
-                Lorem ipsum dolor sit amet. Lorem, ipsum dolor.
-              </h1>
-            </div>
-          </div> */}
         </div>
       </div>
       <div className="w-[1200px] h-[400px] m-auto">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">
+        <h1 className="text-white font-bold text-4xl py-4 mb-4 font-heading">
           Recommendations
         </h1>
         <div className="flex gap-4 hover:cursor-pointer">

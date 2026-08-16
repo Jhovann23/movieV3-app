@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router";
 import HomePage from "./pages/HomePage";
-import Navbar from "./assets/Components/Navbar";
+import Navbar from "./assets/components/Navbar";
 import PopularMovie from "./pages/PopularMovie";
-import PopularCards from "./assets/Components/PopularCards";
+import PopularCards from "./assets/components/PopularCards";
 import TopRatedMovie from "./pages/TopRatedMovie";
 import UpcomingMovie from "./pages/UpComingMovie";
 import LoginForm from "./pages/LoginForm.jsx";
@@ -24,8 +24,8 @@ export default function App() {
 
         <Route path="/movie/up-coming/:id/:title" element={<UpcomingMovie />} />
 
-        <Route path={"/login"} element={<LoginForm/>}/>
-        <Route path={"/register"} element={<RegisterForm/>}/>
+        <Route path="/login" element={<LoginForm/>}/>
+        <Route path="/register" element={<RegisterForm/>}/>
         <Route path="/movie/:id/:title" element={<SearchMovie />} />
 
       </Routes>

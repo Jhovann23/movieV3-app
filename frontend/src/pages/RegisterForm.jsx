@@ -1,17 +1,32 @@
 import { useState } from "react";
 import { User, Mail, Lock } from "lucide-react";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
+import Notification from "./Notification.jsx";
+import axios from "axios";
 
 export default function RegisterForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState("")
     const [agreed, setAgreed] = useState(false);
+    const [notif, setNotif] = useState({ show: false, type: "success", message: "" });
+    const URL = "http://127.0.0.1:3030"
+    const navigae = useNavigate()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!agreed) return;
-        // TODO: panggil API register (misal: POST /api/auth/register)
+        try {
+            await axios.post(`${URL}/register`, {
+                username: username,
+                email: email,
+                password: password,
+            })
+            navigae("/")
+            setNotif({ show: true, type: "success", message: "Berhasil Login" });
+        }catch (error) {
+            setNotif({ show: true, type: "error", message: error.response.data.message });
+        }
+
         console.log({ username, email, password });
     };
 
@@ -29,6 +44,7 @@ export default function RegisterForm() {
             <div className="w-full max-w-md relative">
                 {/* Card Form */}
                 <div className="bg-[#141617] border border-[#252829] rounded-xl p-6">
+                    <Notification show={notif.show} type={notif.type} message={notif.message} onClose={() => setNotif((n) => ({ ...n, show: false }))}/>
                     {/* Header / Branding */}
                     <div className="text-center mb-6">
                         <h1 className="text-2xl font-extrabold text-[#01BBEB] tracking-tight mb-1">

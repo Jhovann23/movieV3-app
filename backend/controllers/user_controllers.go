@@ -28,7 +28,7 @@ func (c *UserController) Register(ctx fiber.Ctx) error {
 	}
 	//panggil service register
 	if err := c.service.Register(user); err != nil {
-		return utils.BadRequest(ctx, "Registrasi Gagal!", err.Error())
+		return utils.BadRequest(ctx, "Email ini sudah terdaftar!", err.Error())
 	}
 	//panggil user response dan simpan di sebuah variabel
 	var userResponse models.UserResponse
@@ -52,7 +52,7 @@ func (c *UserController) Login(ctx fiber.Ctx) error {
 	//panggil fungsi service login
 	user, err := c.service.Login(body.Email, body.Password)
 	if err != nil {
-		return utils.Unauthorized(ctx, "Login Gagal!", err.Error())
+		return utils.Unauthorized(ctx, "Username atau Password salah!", err.Error())
 	}
 
 	//buat token atau generate token pakai utils yang sudah dibuat + generate refresh token

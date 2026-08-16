@@ -2,7 +2,8 @@ import { useNavigate, useParams } from "react-router";
 import {getMovieListPopular, imageURL} from "../api";
 import { getRecommendationsMovie } from "../api";
 import { useEffect, useState } from "react";
-import { Plus, StarPlus } from "lucide-react"
+import { ReviewRateModal} from "../assets/components/ReviewModal.jsx";
+import { Plus, StarPlus, Check } from "lucide-react"
 import { imageOriginal } from "../api";
 import axios from "axios";
 
@@ -11,16 +12,26 @@ export default function BannerMovie() {
   const [recommendations, setRecommendations] = useState([]);
   const [detail, setDetail] = useState([]);
   const [credits, setCredits] = useState([]);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [inWatchlist, setInWatchlist] = useState(false);
+  const [open, setOpen] = useState(false)
+
   window.scrollTo({top: 0})
   const { id, title } = useParams();
   const navigate = useNavigate();
   const idNum = parseInt(id);
+
+  const isInWatchlist = inWatchlist;
 
   //Jam
   const runtime = parseInt(detail.runtime)
 
   const jam = Math.floor(runtime / 60);
   const sisaMenit = runtime % 60;
+
+    const onWatchListClick = () => {
+        setInWatchlist((v) => !v)
+    }
 
   useEffect(() => {
     const getDetails = async () => {
@@ -67,7 +78,7 @@ export default function BannerMovie() {
         />
       </div>
 
-      <div className="flex p-12 mt-[-465px] brightness-100 items-center">
+      <div className="flex p-12 mt-[-500px] brightness-100 items-center">
         <img
           src={`${imageURL}/${popularMovies.poster_path}`}
           alt=""
@@ -88,28 +99,38 @@ export default function BannerMovie() {
           <p className="w-[650px] mb-12 font-body">{popularMovies.overview}</p>
         </div>
 
-        <div className={"text-white bg-black border-2 border-[#2C3440] p-3.5 rounded-lg w-[25%] h-[150px] ml-12 font-heading"}>
-          <div className={"flex mb-3 border-b border-b-white py-2 pb-3.5 font-semibold"}>
-            <Plus className={"mr-2"}/>
-            <button>Tambahkan Ke Watchlist</button>
-          </div>
-          <div className={"py-2 flex"}>
+        <div className={"text-white bg-[#14161C] border-2 border-[#2C3440] p-3.5 rounded-lg w-[25%] h-[150px] ml-12 font-heading"}>
+          <button className={"flex mb-3 border-b w-full border-b-white py-2 pb-3.5 font-semibold"} onClick={onWatchListClick}>
+              {isInWatchlist ? <Check className={"mr-2"}/> : <Plus className={"mr-2"} />}
+              {isInWatchlist ? "Ketuk untuk hapus" : "Tambahkan ke watchlist"}
+          </button>
+
+          <button className={"py-2 flex"} onClick={() => setReviewOpen(true)}>
             <StarPlus className={"mr-2"}/>
             <span className={"font-semibold"}>
                 Review & Rate
               </span>
-          </div>
+          </button>
         </div>
 
+          {/*review modal rate*/}
+          <ReviewRateModal
+              open={reviewOpen}
+              onClose={() => setReviewOpen(false)}
+              onSubmit={async (payload) => {
+                  console.log("kirim ke POST /api/v1/movies/:id/rate:", payload);
+              }}
+              movie={title}
+          />
       </div>
 
       <div className="w-[1200px] m-auto ">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">Top Cast</h1>
+        <h1 className="text-white font-bold text-4xl py-4 mt-12 mb-4 font-heading">Top Cast</h1>
         <div className="flex flex-wrap ">
           {credits.map((credit) => {
             return (
               <div
-                className=" mb-8 rounded-t-lg mr-4 hover:cursor-pointer"
+                className=" mb-4 rounded-t-lg mr-4 hover:cursor-pointer"
                 key={credit.id}
               >
                 <img
@@ -118,7 +139,7 @@ export default function BannerMovie() {
                   className="w-[138px] h-[175px] object-cover rounded-t-lg"
                 />
                 <div className=" w-[138px] h-[90px] bg-white rounded-b-lg">
-                  <h1 className="font-bold pt-2 pl-2 hover:text-[#01BBEB] hover:cursor-pointer font-heading">
+                  <h1 className="font-bold pt-2 text-sm pl-2 hover:text-[#01BBEB] hover:cursor-pointer font-heading">
                     {credit.name}
                   </h1>
                   <h1 className="pb-4 pl-2 w-[138px] text-xs font-body">{credit.character}</h1>
@@ -132,7 +153,7 @@ export default function BannerMovie() {
        <div
         className="w-[1200px] h-[400px] m-auto"
       >
-        <h1 className="text-white font-bold text-4xl p-4 mb-4">
+        <h1 className="text-white font-bold text-4xl py-4 mb-4">
           Recommendations
         </h1>
         <div className="flex gap-4 hover:cursor-pointer">

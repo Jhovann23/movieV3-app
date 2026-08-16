@@ -81,12 +81,12 @@ export default function Recommendation() {
       </div>
 
       <div className="w-[1200px] m-auto ">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">Top Cast</h1>
+        <h1 className="text-white font-bold text-4xl py-4 mb-4 font-heading">Top Cast</h1>
         <div className="flex flex-wrap ">
           {credits.map((credit) => {
             return (
               <div
-                className=" mb-8 border-white rounded-t-lg mr-4 hover:cursor-pointer "
+                className=" mb-4 border-white rounded-t-lg mr-4 hover:cursor-pointer "
                 key={credit.id}
               >
                 <img
@@ -95,7 +95,7 @@ export default function Recommendation() {
                   className="w-[138px] h-[175px] object-cover rounded-t-lg"
                 />
                 <div className=" w-[138px] h-[90px] bg-white rounded-b-lg">
-                  <h1 className="font-bold pt-2 pl-2 text-base hover:text-[#01BBEB] hover:cursor-pointer font-heading">
+                  <h1 className="font-bold pt-2 pl-2 text-sm hover:text-[#01BBEB] hover:cursor-pointer font-heading">
                     {credit.name}
                   </h1>
                   <h1 className="pb-4 pl-2 w-[138px] text-xs font-body">{credit.character}</h1>
@@ -107,7 +107,7 @@ export default function Recommendation() {
       </div>
 
       <div className="w-[1200px] m-auto">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">
+        <h1 className="text-white font-bold text-4xl py-4 mb-4 font-heading">
           Recommendations
         </h1>
         <div className="flex gap-4 hover:cursor-pointer">

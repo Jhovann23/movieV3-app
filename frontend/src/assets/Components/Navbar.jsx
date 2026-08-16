@@ -131,8 +131,8 @@ function ShowListSearch() {
         <div className={"flex"}>
             <div className={"text-white font-bold"}>
                 <ul className={"flex gap-8 mr-8 items-center py-1"}>
-                    <li className={"border-2 border-[#445566] px-3 py-2 rounded-md cursor-pointer hover:bg-[#01BBEB]"}><Link to={"/login"}>Login</Link></li>
-                    <li className={"bg-[#01BBEB] text-black px-3 py-2 rounded-md cursor-pointer hover:text-white"}><Link to={"/register"}>Sign up</Link></li>
+                    <Link to={"/login"} className={"border-2 border-[#445566] px-3 py-2 rounded-md cursor-pointer hover:bg-[#01BBEB]"}>Login</Link>
+                    <Link to={"/register"} className={"bg-[#01BBEB] text-black px-3 py-2 rounded-md cursor-pointer hover:text-white"}>Sign up</Link>
                 </ul>
             </div>
 

@@ -2,9 +2,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useEffect, useState } from "react";
 import { getMovieListPopular, getMovieTopRated, getMovieUpComing } from "../api";
 
-import Banner from "../assets/Components/Banner";
-import Movies from "../assets/Components/Movies";
-import BannerDetail from "../assets/Components/BannerDetail.jsx";
+import Banner from "../assets/components/Banner";
+import Movies from "../assets/components/Movies";
 
 export default function HomePage() {
   const [popularMovies, setPopularMovies] = useState([]);
