@@ -15,6 +15,7 @@ type UserService interface {
 	Update(user *models.User) error
 	Delete(id int) error
 	FindByPublicId(public string) (*models.User, error)
+	FindById(id int) (*models.User, error)
 }
 type userService struct {
 	repo repositories.UserRepository
@@ -73,4 +74,8 @@ func (s *userService) Delete(id int) error {
 
 func (s *userService) FindByPublicId(publicId string) (*models.User, error) {
 	return s.repo.FindByPublicId(publicId)
+}
+
+func (s *userService) FindById(id int) (*models.User, error) {
+	return s.repo.FindById(id)
 }

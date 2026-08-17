@@ -11,7 +11,7 @@ export default function RegisterForm() {
     const [agreed, setAgreed] = useState(false);
     const [notif, setNotif] = useState({ show: false, type: "success", message: "" });
     const URL = "http://127.0.0.1:3030"
-    const navigae = useNavigate()
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +21,7 @@ export default function RegisterForm() {
                 email: email,
                 password: password,
             })
-            navigae("/")
+            navigate("/")
             setNotif({ show: true, type: "success", message: "Berhasil Login" });
         }catch (error) {
             setNotif({ show: true, type: "error", message: error.response.data.message });

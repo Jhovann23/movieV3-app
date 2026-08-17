@@ -1,28 +1,23 @@
 import { useState } from "react";
 import { Mail, Lock, ArrowRight, Film } from "lucide-react";
 import {Link, useNavigate} from "react-router";
-import axios from "axios";
 import Notification from "./Notification.jsx";
+import {useAuth} from "../context/AuthContext.jsx";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [notif, setNotif] = useState({ show: false, type: "success", message: "" });
+    const { login } = useAuth();
     const navigate = useNavigate()
-
-    const URL = "http://127.0.0.1:3030"
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${URL}/login`, {
-                email: email,
-                password: password
-            })
+            await login(email, password);
             navigate("/")
             setNotif({ show: true, type: "success", message: "Berhasil Login" });
         }catch (error) {
-            console.log(error.response.data)
             setNotif({ show: true, type: "error", message: error.response.data.message });
         }
         console.log({ email, password });

@@ -9,7 +9,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.MovieController, rc *controllers.RatingController, wc *controllers.WatchListController) {
+func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.MovieController, rc *controllers.RatingController, wc *controllers.WatchListController, ac *controllers.AuthController) {
 	//loadEnv pakai godotenv
 	err := godotenv.Load()
 	if err != nil {
@@ -27,6 +27,11 @@ func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.Movie
 		},
 	}))
 
+	//auth
+	authGroup := api.Group("/auth")
+	authGroup.Get("/me", ac.Me)
+
+	//movie
 	movieGroup := app.Group("/movies")
 	movieGroup.Get("/popular", mc.GetPopularMovie)
 	movieGroup.Get("/upcoming", mc.GetUpcomingMovie)

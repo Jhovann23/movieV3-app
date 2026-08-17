@@ -85,13 +85,13 @@ export default function SearchMovie() {
           {credits.map((credit) => {
             return (
               <div
-                className=" mb-8 border-white rounded-t-lg mr-2 hover:cursor-pointer "
+                className=" mb-8 border-white rounded-t-lg mr-4 hover:cursor-pointer "
                 key={credit.id}
               >
                 <img
                   src={`${imageURL}/${credit.profile_path}`}
                   alt=""
-                  className="w-[138px] h-[175px] object-cover rounded-b-lg"
+                  className="w-[138px] h-[175px] object-cover rounded-t-lg"
                 />
                 <div className=" w-[138px] h-[90px] bg-white rounded-b-lg">
                   <h1 className="font-bold pt-2 pl-2 text-base hover:text-[#01BBEB] hover:cursor-pointer font-heading">
