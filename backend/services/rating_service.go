@@ -8,8 +8,10 @@ import (
 )
 
 type RatingService interface {
-	RateMovie(userID uint, movieID int, score int, review string) error
+	RateMovie(userID uint, movieID int, score int, review, posterPath string) error
 	DeleteRatingByUser(userID uint, movieID int) error
+	GetRatingByUser(userID uint, movieID int) (*models.Rating, error)
+	GetAllRatingsUser(userID uint) ([]*models.Rating, error)
 }
 
 type ratingService struct {
@@ -20,16 +22,17 @@ func NewRatingService(repo repositories.RatingRepository) RatingService {
 	return &ratingService{repo: repo}
 }
 
-func (s *ratingService) RateMovie(userID uint, movieID int, score int, review string) error {
+func (s *ratingService) RateMovie(userID uint, movieID int, score int, review, posterPath string) error {
 	if score < 1 || score > 5 {
 		return errors.New("score must be between 1 and 5")
 	}
 
 	rating := &models.Rating{
-		MovieID: movieID,
-		Score:   score,
-		UserID:  userID,
-		Review:  review,
+		MovieID:    movieID,
+		Score:      score,
+		UserID:     userID,
+		Review:     review,
+		PosterPath: posterPath,
 	}
 
 	return s.repo.Upsert(rating)
@@ -37,4 +40,12 @@ func (s *ratingService) RateMovie(userID uint, movieID int, score int, review st
 
 func (s *ratingService) DeleteRatingByUser(userID uint, movieID int) error {
 	return s.repo.DeleteByUserAndMovie(userID, movieID)
+}
+
+func (s *ratingService) GetRatingByUser(userID uint, movieID int) (*models.Rating, error) {
+	return s.repo.GetByUserAndMovie(userID, movieID)
+}
+
+func (s *ratingService) GetAllRatingsUser(userID uint) ([]*models.Rating, error) {
+	return s.repo.GetAllRatings(userID)
 }

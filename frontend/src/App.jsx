@@ -10,6 +10,7 @@ import RegisterForm from "./pages/RegisterForm.jsx";
 import PageMovie from "./pages/PageMovie.jsx";
 import Watchlist from "./pages/Watchlist.jsx";
 import ProtectedRoute from "./assets/components/ProtectedRoutes.jsx";
+import ReviewRatePage from "./pages/ReviewRatePage.jsx";
 
 export default function App() {
   return (
@@ -25,9 +26,9 @@ export default function App() {
 
         <Route element={<ProtectedRoute/>}>
           <Route path={"/watchlist"} element={<Watchlist />}/>
+          <Route path={"/rate"} element={<ReviewRatePage />}/>
         </Route>
-
-
+        
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/register" element={<RegisterForm/>}/>
 

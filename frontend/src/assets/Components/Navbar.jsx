@@ -101,8 +101,8 @@ export default function Navbar() {
                     <li className={"text-[#01BBEB] font-bold text-3xl mr-12"}>CineHub</li>
                 </Link>
                 <div className={"flex gap-8"}>
-                    <li className={`text-white font-bold cursor-pointer ${isActive('/watchlist') ? 'border-b-2 border-[#22D3EE] text-white pb-2 ' : 'border-b-2 border-transparent text-white/70 hover:text-white'}`}><button onClick={() => handleProtectedNav('/watchlist')}>Watchlist</button></li>
-                    <li className={`text-white font-bold cursor-pointer ${isActive('/rating') ? 'border-b-2 border-[#22D3EE] text-white' : 'border-b-2 border-transparent text-white/70 hover:text-white'}`}>My Rating</li>
+                    <li className={`text-white font-bold cursor-pointer ${isActive('/watchlist') ? 'border-b-2 border-[#22D3EE] text-white pb-2' : 'border-b-2 border-transparent text-white/70 hover:text-white'}`}><button onClick={() => handleProtectedNav('/watchlist')}>Watchlist</button></li>
+                    <li className={`text-white font-bold cursor-pointer ${isActive('/rate') ? 'border-b-2 border-[#22D3EE] text-white pb-2' : 'border-b-2 border-transparent text-white/70 hover:text-white'}`}><button onClick={() => handleProtectedNav('/rate')}>My Rating</button></li>
                 </div>
             </ul>
         </div>

@@ -9,6 +9,7 @@ import (
 type RatingRepository interface {
 	Upsert(rating *models.Rating) error
 	GetByUserAndMovie(userID uint, movieID int) (*models.Rating, error)
+	GetAllRatings(userID uint) ([]*models.Rating, error)
 	DeleteByUserAndMovie(userID uint, movieID int) error
 }
 
@@ -38,4 +39,13 @@ func (r *ratingRepository) GetByUserAndMovie(userID uint, movieID int) (*models.
 func (r *ratingRepository) DeleteByUserAndMovie(userID uint, movieID int) error {
 	result := config.DB.Where("user_id = ? AND movie_id = ?", userID, movieID).Delete(&models.Rating{})
 	return result.Error
+}
+
+func (r *ratingRepository) GetAllRatings(userID uint) ([]*models.Rating, error) {
+	var ratings []*models.Rating
+	err := config.DB.Where("user_id = ?", userID).Find(&ratings).Error
+	if err != nil {
+		return nil, err
+	}
+	return ratings, nil
 }

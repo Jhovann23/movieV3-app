@@ -28,15 +28,16 @@ func (s *RatingController) RateMovie(ctx fiber.Ctx) error {
 	movieID, _ := strconv.Atoi(ctx.Params("movie_id"))
 
 	var req struct {
-		Score  int    `json:"score"`
-		Review string `json:"review"`
+		Score      int    `json:"score"`
+		Review     string `json:"review"`
+		PosterPath string `json:"poster_path"`
 	}
 
 	if err := ctx.Bind().Body(&req); err != nil {
 		return utils.BadRequest(ctx, "Error binding body", err.Error())
 	}
 
-	if err := s.RatingService.RateMovie(uint(userID), movieID, req.Score, req.Review); err != nil {
+	if err := s.RatingService.RateMovie(userID, movieID, req.Score, req.Review, req.PosterPath); err != nil {
 		return utils.BadRequest(ctx, "Error rate movie", err.Error())
 	}
 
@@ -57,4 +58,34 @@ func (s *RatingController) DeleteRating(ctx fiber.Ctx) error {
 	}
 
 	return utils.Success(ctx, "Success deleting rating", nil)
+}
+
+func (s *RatingController) GetRatingUser(ctx fiber.Ctx) error {
+	token := jwtware.FromContext(ctx)
+	movieID, _ := strconv.Atoi(ctx.Params("movie_id"))
+
+	claims := token.Claims.(jwt.MapClaims)
+	userIDFloat := claims["user_id"].(float64)
+	userID := uint(userIDFloat)
+
+	result, err := s.RatingService.GetRatingByUser(userID, movieID)
+
+	if err != nil {
+		return utils.BadRequest(ctx, "Error getting rating user", err.Error())
+	}
+	return utils.Success(ctx, "Get rating user", result)
+}
+
+func (s *RatingController) GetAllRatings(ctx fiber.Ctx) error {
+	token := jwtware.FromContext(ctx)
+	claims := token.Claims.(jwt.MapClaims)
+	userIDFloat := claims["user_id"].(float64)
+	userID := uint(userIDFloat)
+
+	result, err := s.RatingService.GetAllRatingsUser(userID)
+	if err != nil {
+		return utils.BadRequest(ctx, "Error getting all rating user", err.Error())
+	}
+
+	return utils.Success(ctx, "Get all rating user", result)
 }

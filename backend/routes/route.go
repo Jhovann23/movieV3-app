@@ -45,6 +45,8 @@ func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.Movie
 	ratingGroup := api.Group("/")
 	ratingGroup.Post("/movies/:movie_id/rate", rc.RateMovie)
 	ratingGroup.Delete("/movies/:movie_id", rc.DeleteRating)
+	ratingGroup.Get("/movies/:movie_id/rate", rc.GetRatingUser)
+	ratingGroup.Get("/movies/rate", rc.GetAllRatings)
 
 	//watch list
 	watchListGroup := api.Group("/")

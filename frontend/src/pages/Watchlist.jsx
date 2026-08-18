@@ -20,7 +20,7 @@ export default function Watchlist(){
         <div className={"bg-[#161819] min-h-screen"}>
             <div className={"w-[950px] m-auto"}>
                 <div className={"pt-8 font-bold text-2xl"}>
-                    <span className={"text-[#01BBEB] "}>WatchList</span>
+                    <span className={"text-[#01BBEB] font-heading"}>WatchList</span>
                 </div>
                 <div className={"flex gap-3 py-8 flex-row flex-wrap"}>
                     {watchlist.map((item, index) => {
