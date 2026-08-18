@@ -6,6 +6,7 @@ import { Search, X } from "lucide-react"
 import {Link, useNavigate} from "react-router";
 import {useAuth} from "../../context/AuthContext.jsx";
 import {UserMenu} from "./UserMenu.jsx";
+import {useLocation} from "react-router-dom";
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
@@ -19,6 +20,17 @@ export default function Navbar() {
   const [searchList, setSearchList] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+    const handleProtectedNav = (path) => {
+        if (!user) {
+            navigate('/login', { state: { from: path } });
+        } else {
+            navigate(path);
+        }
+    };
+
+    const isActive = (path) => location.pathname === path;
 
   const search = async (q) => {
     const query = await searchMovie(q);
@@ -89,8 +101,8 @@ export default function Navbar() {
                     <li className={"text-[#01BBEB] font-bold text-3xl mr-12"}>CineHub</li>
                 </Link>
                 <div className={"flex gap-8"}>
-                    <li className={"text-white font-bold cursor-pointer hover:text-[#01BBEB]"}>Watchlist</li>
-                    <li className={"text-white font-bold cursor-pointer hover:text-[#01BBEB]"}>My Rating</li>
+                    <li className={`text-white font-bold cursor-pointer ${isActive('/watchlist') ? 'border-b-2 border-[#22D3EE] text-white pb-2 ' : 'border-b-2 border-transparent text-white/70 hover:text-white'}`}><button onClick={() => handleProtectedNav('/watchlist')}>Watchlist</button></li>
+                    <li className={`text-white font-bold cursor-pointer ${isActive('/rating') ? 'border-b-2 border-[#22D3EE] text-white' : 'border-b-2 border-transparent text-white/70 hover:text-white'}`}>My Rating</li>
                 </div>
             </ul>
         </div>
@@ -177,8 +189,6 @@ export default function Navbar() {
                 </div>
             )}
         </div>
-
-
 
       <ul className="bg-black mt-[50px] absolute z-20 w-full rounded-lg " onClick={() => { 
         setMovie([])

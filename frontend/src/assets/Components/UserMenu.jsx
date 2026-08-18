@@ -15,9 +15,7 @@ export function UserMenu({ user, onSettings, onLogout }) {
     }, []);
 
     // eslint-disable-next-line react/prop-types
-    const initial = user.name?.charAt(0).toUpperCase() ?? "?";
-
-    console.log(user)
+    const initial = user.username.charAt(0).toUpperCase() ?? "?";
 
     return (
         <div className="relative z-50" ref={ref}>

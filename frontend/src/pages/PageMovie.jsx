@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { imageOriginal } from "../api";
 import axios from "axios";
 
-export default function SearchMovie() {
+export default function PageMovie() {
   const [recommendations, setRecommendations] = useState([]);
   const [detail, setDetail] = useState([]);
   const [credits, setCredits] = useState([]);

@@ -9,13 +9,15 @@ export default function LoginForm() {
     const [password, setPassword] = useState("");
     const [notif, setNotif] = useState({ show: false, type: "success", message: "" });
     const { login } = useAuth();
+    const from = location.state?.from || '/';
+
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await login(email, password);
-            navigate("/")
+            navigate(from, {replace: true});
             setNotif({ show: true, type: "success", message: "Berhasil Login" });
         }catch (error) {
             setNotif({ show: true, type: "error", message: error.response.data.message });

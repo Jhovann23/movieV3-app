@@ -7,7 +7,9 @@ import TopRatedMovie from "./pages/TopRatedMovie";
 import UpcomingMovie from "./pages/UpComingMovie";
 import LoginForm from "./pages/LoginForm.jsx";
 import RegisterForm from "./pages/RegisterForm.jsx";
-import SearchMovie from "./pages/SearchMovie";
+import PageMovie from "./pages/PageMovie.jsx";
+import Watchlist from "./pages/Watchlist.jsx";
+import ProtectedRoute from "./assets/components/ProtectedRoutes.jsx";
 
 export default function App() {
   return (
@@ -16,17 +18,20 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/movie/popular" element={<TopRatedMovie />} />
-
         <Route path="/movie/popular/:id/:title" element={<PopularMovie />} />
         <Route path="/movie/popular/:id/:title" element={<PopularCards />} />
-
         <Route path="/movie/top-rate/:id/:title" element={<TopRatedMovie />} />
-
         <Route path="/movie/up-coming/:id/:title" element={<UpcomingMovie />} />
+
+        <Route element={<ProtectedRoute/>}>
+          <Route path={"/watchlist"} element={<Watchlist />}/>
+        </Route>
+
 
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/register" element={<RegisterForm/>}/>
-        <Route path="/movie/:id/:title" element={<SearchMovie />} />
+
+        <Route path="/movie/:id/:title" element={<PageMovie />} />
 
       </Routes>
     </div>
