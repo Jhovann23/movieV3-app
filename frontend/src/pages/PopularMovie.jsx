@@ -6,6 +6,7 @@ import { ReviewRateModal} from "../assets/components/ReviewModal.jsx";
 import { Plus, StarPlus, Check } from "lucide-react"
 import { imageOriginal } from "../api";
 import axios from "axios";
+import {useToast} from "../context/ToastContext.jsx";
 
 export default function BannerMovie() {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -16,10 +17,14 @@ export default function BannerMovie() {
   const [inWatchlist, setInWatchlist] = useState(false);
   const [open, setOpen] = useState(false)
 
+  const token = localStorage.getItem("access_token");
+  const toast = useToast();
+
   window.scrollTo({top: 0})
   const { id, title } = useParams();
   const navigate = useNavigate();
   const idNum = parseInt(id);
+  const poster_path = popularMovies.poster_path;
 
   const isInWatchlist = inWatchlist;
 
@@ -69,6 +74,23 @@ export default function BannerMovie() {
     });
   }, [idNum]);
 
+  const handleRateSubmit =  async ({score, review}) => {
+    try {
+      await axios.post(`http://127.0.0.1:3030/api/v1/movies/${id}/rate`, {
+        score: score,
+        review: review,
+        poster_path: poster_path,
+        title: title,
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      toast.success("Rating successfully rated.");
+    }catch (e) {
+      console.log(e);
+      toast.error(e.data.message);
+    }
+  }
+
   return (
     <div className="bg-black box-border" key={id}>
       <div>
@@ -99,7 +121,7 @@ export default function BannerMovie() {
           <p className="w-[650px] mb-12 font-body">{popularMovies.overview}</p>
         </div>
 
-        <div className={"text-white bg-[#14161C] border-2 border-[#2C3440] p-3.5 rounded-lg w-[25%] h-[150px] ml-12 font-heading"}>
+        <div className={"text-white bg-[#161819] border-2 border-[#2C3440] p-3.5 rounded-lg w-[25%] h-[150px] ml-12 font-heading"}>
           <button className={"flex mb-3 border-b w-full border-b-white py-2 pb-3.5 font-semibold"} onClick={onWatchListClick}>
               {isInWatchlist ? <Check className={"mr-2"}/> : <Plus className={"mr-2"} />}
               {isInWatchlist ? "Ketuk untuk hapus" : "Tambahkan ke watchlist"}
@@ -117,9 +139,7 @@ export default function BannerMovie() {
           <ReviewRateModal
               open={reviewOpen}
               onClose={() => setReviewOpen(false)}
-              onSubmit={async (payload) => {
-                  console.log("kirim ke POST /api/v1/movies/:id/rate:", payload);
-              }}
+              onSubmit={handleRateSubmit}
               movie={title}
           />
       </div>

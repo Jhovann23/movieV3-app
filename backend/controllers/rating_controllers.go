@@ -31,13 +31,14 @@ func (s *RatingController) RateMovie(ctx fiber.Ctx) error {
 		Score      int    `json:"score"`
 		Review     string `json:"review"`
 		PosterPath string `json:"poster_path"`
+		Title      string `json:"title"`
 	}
 
 	if err := ctx.Bind().Body(&req); err != nil {
 		return utils.BadRequest(ctx, "Error binding body", err.Error())
 	}
 
-	if err := s.RatingService.RateMovie(userID, movieID, req.Score, req.Review, req.PosterPath); err != nil {
+	if err := s.RatingService.RateMovie(userID, movieID, req.Score, req.Review, req.PosterPath, req.Title); err != nil {
 		return utils.BadRequest(ctx, "Error rate movie", err.Error())
 	}
 

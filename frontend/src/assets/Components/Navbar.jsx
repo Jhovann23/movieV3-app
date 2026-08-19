@@ -7,13 +7,13 @@ import {Link, useNavigate} from "react-router";
 import {useAuth} from "../../context/AuthContext.jsx";
 import {UserMenu} from "./UserMenu.jsx";
 import {useLocation} from "react-router-dom";
+import {useToast} from "../../context/ToastContext.jsx";
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
   const searchRef = useRef(null);
   const inputRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false);
-
 
   const [movie, setMovie] = useState("");
 

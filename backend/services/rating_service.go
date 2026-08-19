@@ -8,7 +8,7 @@ import (
 )
 
 type RatingService interface {
-	RateMovie(userID uint, movieID int, score int, review, posterPath string) error
+	RateMovie(userID uint, movieID int, score int, review, posterPath, title string) error
 	DeleteRatingByUser(userID uint, movieID int) error
 	GetRatingByUser(userID uint, movieID int) (*models.Rating, error)
 	GetAllRatingsUser(userID uint) ([]*models.Rating, error)
@@ -22,7 +22,7 @@ func NewRatingService(repo repositories.RatingRepository) RatingService {
 	return &ratingService{repo: repo}
 }
 
-func (s *ratingService) RateMovie(userID uint, movieID int, score int, review, posterPath string) error {
+func (s *ratingService) RateMovie(userID uint, movieID int, score int, review, posterPath, title string) error {
 	if score < 1 || score > 5 {
 		return errors.New("score must be between 1 and 5")
 	}
@@ -33,6 +33,7 @@ func (s *ratingService) RateMovie(userID uint, movieID int, score int, review, p
 		UserID:     userID,
 		Review:     review,
 		PosterPath: posterPath,
+		MovieTitle: title,
 	}
 
 	return s.repo.Upsert(rating)

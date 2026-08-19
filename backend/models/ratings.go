@@ -11,6 +11,7 @@ type Rating struct {
 	PosterPath string    `json:"poster_path" db:"poster_path"`
 	Score      int       `json:"score" db:"score" gorm:"not null"` // 1-5
 	Review     string    `json:"review" db:"review"`
+	MovieTitle string    `json:"movie_title" db:"movie_title"`
 	CreatedAt  time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
 }

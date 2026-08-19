@@ -8,10 +8,10 @@ export default function Watchlist(){
 
     useEffect(()=>{
         const getWatchlist = async () => {
-            const movie = await axios.get("http://127.0.0.1:3030/api/v1/watchlist", {
+            const movies = await axios.get("http://127.0.0.1:3030/api/v1/watchlist", {
                 headers: { Authorization: `Bearer ${token}` }
             })
-            setWatchlist(movie.data.data)
+            setWatchlist(movies.data.data)
         }
         getWatchlist();
     }, [token]);

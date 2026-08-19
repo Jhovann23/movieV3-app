@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { Mail, Lock, ArrowRight, Film } from "lucide-react";
 import {Link, useNavigate} from "react-router";
-import Notification from "./Notification.jsx";
 import {useAuth} from "../context/AuthContext.jsx";
+import {useToast} from "../context/ToastContext.jsx";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [notif, setNotif] = useState({ show: false, type: "success", message: "" });
     const { login } = useAuth();
     const from = location.state?.from || '/';
-
+    const toast = useToast();
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
@@ -18,9 +17,10 @@ export default function LoginForm() {
         try {
             await login(email, password);
             navigate(from, {replace: true});
-            setNotif({ show: true, type: "success", message: "Berhasil Login" });
+            toast.success("Login successful");
         }catch (error) {
-            setNotif({ show: true, type: "error", message: error.response.data.message });
+            console.log(error.message);
+            toast.error(error.message);
         }
         console.log({ email, password });
     };
@@ -28,8 +28,6 @@ export default function LoginForm() {
     return (
         <div className="min-h-screen w-full bg-[#0d0f10] flex items-center justify-center px-4">
             <div className="w-full max-w-md">
-
-                <Notification show={notif.show} type={notif.type} message={notif.message} onClose={() => setNotif((n) => ({ ...n, show: false }))}/>
 
                 {/* Header / Branding */}
                 <div className="text-center mb-8">

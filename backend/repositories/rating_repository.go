@@ -43,7 +43,7 @@ func (r *ratingRepository) DeleteByUserAndMovie(userID uint, movieID int) error 
 
 func (r *ratingRepository) GetAllRatings(userID uint) ([]*models.Rating, error) {
 	var ratings []*models.Rating
-	err := config.DB.Where("user_id = ?", userID).Find(&ratings).Error
+	err := config.DB.Where("user_id = ?", userID).Order("created_at ASC").Find(&ratings).Error
 	if err != nil {
 		return nil, err
 	}

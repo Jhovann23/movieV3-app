@@ -1,10 +1,12 @@
 import {useEffect, useRef, useState} from "react"
 import { LogOut, Settings, ChevronDown } from "lucide-react"
+import {useToast} from "../../context/ToastContext.jsx";
 
 // eslint-disable-next-line react/prop-types
 export function UserMenu({ user, onSettings, onLogout }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
+    const toast = useToast();
 
     useEffect(() => {
         function handleClickOutside(e) {
@@ -59,6 +61,7 @@ export function UserMenu({ user, onSettings, onLogout }) {
                     </button>
                     <button
                         onClick={() => {
+                            toast.success("Logout Successfully!");
                             setOpen(false);
                             onLogout?.();
                         }}
