@@ -114,3 +114,15 @@ func (controller *MovieController) GetCreditsMovie(ctx fiber.Ctx) error {
 	}
 	return utils.Success(ctx, "Success Get API", result)
 }
+
+func (controller *MovieController) GetNowPlayingMovie(ctx fiber.Ctx) error {
+	page, err := strconv.Atoi(ctx.Params("page", "1"))
+	if err != nil {
+		return err
+	}
+	movies, err := controller.service.GetNowPlaying(page)
+	if err != nil {
+		return utils.BadRequest(ctx, "Failed to fetch API", err.Error())
+	}
+	return utils.Success(ctx, "Get Now Playing Movies", movies)
+}

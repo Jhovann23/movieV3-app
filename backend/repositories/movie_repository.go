@@ -24,6 +24,7 @@ type MovieRepository interface {
 	GetRecommendationsMovies(page int, movieID int) (*models.MoviePaginatedResult, error)
 	GetDetails(page, movieID int) (*models.MovieDetailResult, error)
 	GetCredits(page, movieID int) (*models.MovieCreditPaginatedResult, error)
+	GetNowPlaying(page int) (*models.MoviePaginatedResult, error)
 }
 
 func NewMovieRepository(apiKey string) MovieRepository {
@@ -255,5 +256,39 @@ func (r *tmdbMovieRepository) GetCredits(page, movieID int) (*models.MovieCredit
 
 	return &models.MovieCreditPaginatedResult{
 		Cast: movies,
+	}, nil
+}
+
+func (r *tmdbMovieRepository) GetNowPlaying(page int) (*models.MoviePaginatedResult, error) {
+	url := fmt.Sprintf("%s/movie/now_playing?api_key=%s&page=%d", r.baseURL, r.apiKey, page)
+
+	get, err := r.client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer get.Body.Close()
+
+	var tmdbResp models.TMDBListMovieResponse
+	if err := json.NewDecoder(get.Body).Decode(&tmdbResp); err != nil {
+		return nil, err
+	}
+	movies := make([]models.Movie, len(tmdbResp.Results))
+	for i, movie := range tmdbResp.Results {
+		movies[i] = models.Movie{
+			ID:           movie.ID,
+			Title:        movie.Title,
+			Overview:     movie.Overview,
+			ReleaseDate:  movie.ReleaseDate,
+			VoteAverage:  movie.VoteAverage,
+			PosterPath:   movie.PosterPath,
+			BackdropPath: movie.BackdropPath,
+		}
+	}
+
+	return &models.MoviePaginatedResult{
+		Movies:       movies,
+		Page:         page,
+		TotalPages:   tmdbResp.TotalPages,
+		TotalResults: tmdbResp.TotalResults,
 	}, nil
 }

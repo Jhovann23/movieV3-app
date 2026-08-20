@@ -36,6 +36,7 @@ func Setup(app *fiber.App, uc *controllers.UserController, mc *controllers.Movie
 	movieGroup.Get("/popular", mc.GetPopularMovie)
 	movieGroup.Get("/upcoming", mc.GetUpcomingMovie)
 	movieGroup.Get("/top_rated", mc.GetTopRatedMovie)
+	movieGroup.Get("/now_playing", mc.GetNowPlayingMovie)
 	movieGroup.Get("/search", mc.GetSearchMovie)
 	movieGroup.Get("/:movie_id/recommendations", mc.GetRecommendationsMovie)
 	movieGroup.Get("/:movie_id/details", mc.GetDetailsMovie)

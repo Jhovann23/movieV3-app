@@ -15,6 +15,7 @@ type MovieService interface {
 	GetRecommendationsMovies(page, movieID int) (*models.MoviePaginatedResult, error)
 	GetDetailsMovies(page, movieID int) (*models.MovieDetailResult, error)
 	GetCreditsMovies(page, movieID int) (*models.MovieCreditPaginatedResult, error)
+	GetNowPlaying(page int) (*models.MoviePaginatedResult, error)
 }
 
 type movieService struct {
@@ -77,4 +78,11 @@ func (s *movieService) GetCreditsMovies(page, movieID int) (*models.MovieCreditP
 		page = 1
 	}
 	return s.repo.GetCredits(page, movieID)
+}
+
+func (s *movieService) GetNowPlaying(page int) (*models.MoviePaginatedResult, error) {
+	if page < 1 {
+		page = 1
+	}
+	return s.repo.GetNowPlaying(page)
 }

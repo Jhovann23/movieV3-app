@@ -10,9 +10,8 @@ export default function ProtectedRoute() {
     }
 
     if (!user) {
-        // simpan halaman tujuan, biar abis login bisa balik ke sana lagi
         return <Navigate to="/login" state={{ from: location.pathname }} replace />;
     }
 
-    return <Outlet />; // kalau lolos, render halaman yang dituju
+    return <Outlet />;
 }

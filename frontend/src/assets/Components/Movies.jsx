@@ -13,7 +13,6 @@ export default function Movies({
 
   const list = ["Popular", "Top Rated", "Upcoming"];
 
-  //Before rewrite
    return (
     <div className="mt-12 w-[1200px] m-auto p-8">
       <ul className="flex gap-8 font-semibold text-3xl text-white">

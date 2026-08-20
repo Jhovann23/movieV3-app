@@ -3,7 +3,7 @@ import {getMovieListPopular, imageURL} from "../api";
 import { getRecommendationsMovie } from "../api";
 import { useEffect, useState } from "react";
 import { ReviewRateModal} from "../assets/components/ReviewModal.jsx";
-import { Plus, StarPlus, Check } from "lucide-react"
+import {Plus, StarPlus, Check, ThumbsUp} from "lucide-react"
 import { imageOriginal } from "../api";
 import axios from "axios";
 import {useToast} from "../context/ToastContext.jsx";
@@ -15,7 +15,7 @@ export default function BannerMovie() {
   const [credits, setCredits] = useState([]);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [inWatchlist, setInWatchlist] = useState(false);
-  const [open, setOpen] = useState(false)
+  const percentageRate = Math.round(detail.vote_average * 10) + " %";
 
   const token = localStorage.getItem("access_token");
   const toast = useToast();
@@ -91,6 +91,13 @@ export default function BannerMovie() {
     }
   }
 
+  const releaseDate = detail?.release_date;
+
+  const releaseYear = releaseDate
+      ? releaseDate.split("-")[0]
+      : null;
+
+
   return (
     <div className="bg-black box-border" key={id}>
       <div>
@@ -110,14 +117,17 @@ export default function BannerMovie() {
           <h1 className="font-bold text-5xl font-heading">{title}</h1>
           <div className="text-xl mb-2 mt-2 font-body">
             <span className="mr-4">{jam}h {sisaMenit}m</span>
-            <span className="mr-2">{popularMovies.release_date}</span>
+            <span className="mr-2">{releaseYear}</span>
             {detail.genres && detail.genres.length > 0 && (
               <p className="mt-2">
                 {detail.genres.map((g) => g.name).join(", ")}
               </p>
             )}
           </div>
-          <p className="text-xl mb-2 font-body">{popularMovies.vote_average}</p>
+          <div className={"flex justify-between border-2 px-4 rounded-md shadow-md text-white border-gray-400 w-[20%] my-2 py-0.5"}>
+            <ThumbsUp height={28}/>
+            <p className="text-xl font-body">{percentageRate}</p>
+          </div>
           <p className="w-[650px] mb-12 font-body">{popularMovies.overview}</p>
         </div>
 

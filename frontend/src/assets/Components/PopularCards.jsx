@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 export default function PopularCards({ id, title, poster, release }) {
   const navigate = useNavigate();
 
-  //Before rewrite
   return (
     <div
       className="text-white mb-8 box-border px-1"

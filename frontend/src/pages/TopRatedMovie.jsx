@@ -3,20 +3,32 @@ import { useState } from "react";
 import {getRecommendationsMovie, imageOriginal, imageURL} from "../api";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
+import {Check, Plus, StarPlus, ThumbsUp} from "lucide-react";
+import {useToast} from "../context/ToastContext.jsx";
+import {ReviewRateModal} from "../assets/components/ReviewModal.jsx";
 
 export default function TopRatesMovie() {
   const [recommendations, setRecommendations] = useState([]);
   const [detail, setDetail] = useState([]);
   const [credits, setCredits] = useState([]);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [inWatchlist, setInWatchlist] = useState(false);
+  const toast = useToast();
+  const poster_path = detail.poster_path;
+
+  const isInWatchlist = inWatchlist;
   window.scrollTo({top: 0})
   const { id, title } = useParams();
   const navigate = useNavigate()
   const idNum = parseInt(id);
 
   const runtime = parseInt(detail.runtime)
+  const token = localStorage.getItem("access_token");
 
   const jam = Math.floor(runtime / 60);
   const sisaMenit = runtime % 60;
+
+  const percentageRate = Math.round(detail.vote_average * 10) + " %";
 
   useEffect(() => {
     const getDetails = async () => {
@@ -48,6 +60,33 @@ export default function TopRatesMovie() {
       }, [idNum]
   )
 
+  const handleRateSubmit =  async ({score, review}) => {
+    try {
+      await axios.post(`http://127.0.0.1:3030/api/v1/movies/${id}/rate`, {
+        score: score,
+        review: review,
+        poster_path: poster_path,
+        title: title,
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      toast.success("Rating successfully rated.");
+    }catch (e) {
+      console.log(e);
+      toast.error(e.data.message);
+    }
+  }
+
+  const onWatchListClick = () => {
+    setInWatchlist((v) => !v)
+  }
+
+  const releaseDate = detail?.release_date;
+
+  const releaseYear = releaseDate
+      ? releaseDate.split("-")[0]
+      : null;
+
   return (
     <div className="bg-black box-border" key={id}>
       <div>
@@ -67,16 +106,40 @@ export default function TopRatesMovie() {
           <h1 className="font-bold text-5xl font-heading">{title}</h1>
           <div className="text-xl mb-2 mt-2 font-body">
             <span className="mr-4">{jam}h {sisaMenit}m</span>
-            <span className="mr-2">{detail.release_date}</span>
+            <span className="mr-2">{releaseYear}</span>
             {detail.genres && detail.genres.length > 0 && (
               <p className="mt-2">
                 {detail.genres.map((g) => g.name).join(", ")}
               </p>
             )}
           </div>
-          <p className="text-xl mb-2 font-body">{detail.vote_average}</p>
+          <div className={"flex justify-between border-2 px-4 rounded-md shadow-md text-white border-gray-400 w-[20%] my-2 py-0.5"}>
+            <ThumbsUp height={28}/>
+            <p className="text-xl font-body">{percentageRate}</p>
+          </div>
           <p className="w-[650px] mb-12 font-body">{detail.overview}</p>
         </div>
+
+        <div className={"text-white bg-[#161819] border-2 border-[#2C3440] p-3.5 rounded-lg w-[25%] h-[150px] ml-12 font-heading"}>
+          <button className={"flex mb-3 border-b w-full border-b-white py-2 pb-3.5 font-semibold"} onClick={onWatchListClick}>
+            {isInWatchlist ? <Check className={"mr-2"}/> : <Plus className={"mr-2"} />}
+            {isInWatchlist ? "Ketuk untuk hapus" : "Tambahkan ke watchlist"}
+          </button>
+
+          <button className={"py-2 flex"} onClick={() => setReviewOpen(true)}>
+            <StarPlus className={"mr-2"}/>
+            <span className={"font-semibold"}>
+                Review & Rate
+              </span>
+          </button>
+        </div>
+
+        <ReviewRateModal
+            open={reviewOpen}
+            onClose={() => setReviewOpen(false)}
+            onSubmit={handleRateSubmit}
+            movie={title}
+        />
       </div>
 
       <div className="w-[1200px] m-auto ">
@@ -102,22 +165,6 @@ export default function TopRatesMovie() {
               </div>
             );
           })}
-
-          {/* <div className=" mb-8 border-2 border-white rounded-2xl mr-2 hover:cursor-pointer ">
-              <img
-                src="/expPoster.jpg"
-                alt=""
-                className="w-[200px] h-[300px] object-cover rounded-2xl"
-              />
-              <div className=" w-full bg-white rounded-b-2xl">
-                <h1 className="font-bold pt-4 pl-4 text-lg hover:text-[#01BBEB] hover:cursor-pointer ">
-                  Abdul
-                </h1>
-                <h1 className="pb-4 pl-4 w-[200px]">
-                  Lorem ipsum dolor sit amet. Lorem, ipsum dolor.
-                </h1>
-              </div>
-            </div> */}
 
           <div className="w-[1200px] h-[400px]  m-auto">
             <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">
