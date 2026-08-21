@@ -7,7 +7,6 @@ import {Link, useNavigate} from "react-router";
 import {useAuth} from "../../context/AuthContext.jsx";
 import {UserMenu} from "./UserMenu.jsx";
 import {useLocation} from "react-router-dom";
-import {useToast} from "../../context/ToastContext.jsx";
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
@@ -17,7 +16,7 @@ export default function Navbar() {
 
   const [movie, setMovie] = useState("");
 
-  const [searchList, setSearchList] = useState("");
+  const [query, setQuery] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,11 +31,6 @@ export default function Navbar() {
 
     const isActive = (path) => location.pathname === path;
 
-  const search = async (q) => {
-    const query = await searchMovie(q);
-    setMovie(query);
-  };
-
   const openSearch = () => {
         setIsOpen(true);
 
@@ -47,7 +41,6 @@ export default function Navbar() {
 
   const closeSearch = () => {
         setIsOpen(false);
-        setSearchList("");
     };
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -64,7 +57,6 @@ export default function Navbar() {
             window.removeEventListener("scroll", handleScroll);
         };
     }, [isOpen]);
-
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -89,6 +81,18 @@ export default function Navbar() {
 
     if (loading) {
         return <nav>...</nav>; // atau skeleton loading, biar gak "flicker" Login->UserMenu
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!query.trim()) return;
+
+        const params = new URLSearchParams({
+            query: query.trim().toLowerCase(),
+        });
+
+        navigate(`/search?${params.toString()}`);
+        setQuery("");
     }
 
   return (
@@ -144,33 +148,21 @@ export default function Navbar() {
 
 
             {isOpen && (
-                <div
-                    className="
-            flex
-            h-9
-            w-60
-            items-center
-            rounded-md
-            bg-white
-            shadow-lg
-            animate-[searchExpand_300ms_ease-out]
-            mt-2
-          "
-                ><Search color={"white"} size={25} className={"mt-2"}
-                />
+                <form className="flex h-9 w-60 items-center rounded-md bg-white shadow-lg animate-[searchExpand_300ms_ease-out] mt-2" onSubmit={handleSubmit}>
+                    <Search color={"white"} size={25} className={"mt-2"}/>
                     <input
                         ref={inputRef}
                         type="text"
                         placeholder="Search Movie"
                         className="w-[700px] text-black p-1 rounded-sm focus:outline-none focus:ring-4 focus:border-[#01BBEB]"
-                        value={searchList}
-                        onChange={({ target }) => {
-                            setSearchList(target.value);
-                            search(target.value);
+                        value={query}
+                        onChange={( e ) => {
+                            setQuery(e.target.value);
                         }}
                     />
                     <button
                         onClick={closeSearch}
+                        type="button"
                         className="
                         ml-2
                         mr-2
@@ -186,30 +178,9 @@ export default function Navbar() {
                     >
                         <X size={20} />
                     </button>
-                </div>
+                </form>
             )}
         </div>
-
-      <ul className="bg-black mt-[50px] absolute z-20 w-full rounded-lg " onClick={() => { 
-        setMovie([])
-        setSearchList("")
-        }}>
-        {movie.length > 0
-          ? movie.map((e) => {
-            const overview = e.overview.slice(0, 200) + ' ...'
-              return (
-                <SearchList
-                  key={e.id}
-                  title={e.title}
-                  release={e.release_date}
-                  poster={`${imageURL}/${e.poster_path}`}
-                  overview={overview}
-                  id={e.id}
-                />
-              );
-            })
-          : ""}
-      </ul>
         </div>
     </div>
   );
