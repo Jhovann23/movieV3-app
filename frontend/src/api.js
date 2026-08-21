@@ -31,6 +31,6 @@ export const searchMovie = async (q) => {
   const search = await axios.get(
     `http://127.0.0.1:3030/movies/search?query=${q}`
   );
-  const listMovieSearch = search.data.data.Movies.slice(0,9);
+  const listMovieSearch = search.data.data.movies.slice(0,9);
   return listMovieSearch;
 };

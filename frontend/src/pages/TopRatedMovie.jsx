@@ -96,7 +96,7 @@ export default function TopRatesMovie() {
         />
       </div>
 
-      <div className="flex p-12 mt-[-450px] brightness-100 items-center">
+      <div className="flex p-12 mt-[-500px] brightness-100 items-center">
         <img
           src={`${imageURL}/${detail.poster_path}`}
           alt=""
@@ -143,7 +143,7 @@ export default function TopRatesMovie() {
       </div>
 
       <div className="w-[1200px] m-auto ">
-        <h1 className="text-white font-bold text-4xl p-4 mb-4 font-heading">Top Cast</h1>
+        <h1 className="text-white font-bold text-4xl p-4 mt-12 mb-4 font-heading">Top Cast</h1>
         <div className="flex flex-wrap">
           {credits.map((credit) => {
             return (
