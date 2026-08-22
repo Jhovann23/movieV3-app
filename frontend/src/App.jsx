@@ -21,7 +21,6 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/movie/popular" element={<TopRatedMovie />} />
         <Route path="/movie/popular/:id/:title" element={<PopularMovie />} />
-        <Route path="/movie/popular/:id/:title" element={<PopularCards />} />
         <Route path="/movie/top-rate/:id/:title" element={<TopRatedMovie />} />
         <Route path="/movie/up-coming/:id/:title" element={<UpcomingMovie />} />
 
